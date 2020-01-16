@@ -4,17 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.AppDataStorage;
+import com.example.profitcalcapp.Utilities.Commands;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class MainActivity extends AppCompatActivity {
 
     public Storage storage;
+    private final Commands cmds = new Commands();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void OpenCategories(View view){
+        cmds.StartActivity(this, storage, CategoryActivity.class);
+    }
+
+    public void OpenSettings(View view){
+        cmds.StartActivity(this, storage, SettingsActivity.class);
     }
 
 }
