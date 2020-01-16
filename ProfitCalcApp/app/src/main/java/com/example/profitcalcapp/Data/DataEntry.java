@@ -1,11 +1,9 @@
 package com.example.profitcalcapp.Data;
 
-import com.example.profitcalcapp.Utilities.BooleanString;
-import com.example.profitcalcapp.Utilities.DataTypes.Auras;
-
 public class DataEntry {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
+
     //<editor-fold defaultstate="collapsed" desc="Changeable">
     private boolean open = true;
 
@@ -14,8 +12,7 @@ public class DataEntry {
     private int startWealth = 0;
     private int finishWealth = 0;
 
-    @Auras
-    private int aura = Auras.Vampyrism;
+    private Aura aura = new Aura();
     private int hoursSpent = 0;
     private int killCount = 0;
     private StringBuilder extraDetails = new StringBuilder();
@@ -26,6 +23,7 @@ public class DataEntry {
     private double profitPerHour = 0.0;
     private double profitPerKill = 0.0;
     //</editor-fold>
+
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
@@ -39,7 +37,7 @@ public class DataEntry {
     public String getTitle(){ return this.title; }
     public int getStartWealth(){ return this.startWealth; }
     public int getFinishWealth(){ return this.finishWealth; }
-    public int getAura(){ return this.aura; }
+    public Aura getAura(){ return this.aura; }
     public int getHoursSpent(){ return this.hoursSpent; }
     public int getKillCount(){ return this.killCount; }
     public StringBuilder getExtraDetails(){ return this.extraDetails; }
@@ -63,7 +61,7 @@ public class DataEntry {
     public void setTitle(String title){ this.title = title; }
     public void setStartWealth(int startWealth){ this.startWealth = startWealth; }
     public void setFinishWealth(int finishWealth){ this.finishWealth = finishWealth; }
-    public void setAura(@Auras int aura){ this.aura = aura; }
+    public void setAura(Aura aura){ this.aura = aura; }
     public void setHoursSpent(int hoursSpent){ this.hoursSpent = hoursSpent; }
     public void setKillCount(int killCount){ this.killCount = killCount; }
     public void setExtraDetails(StringBuilder extraDetails){ this.extraDetails = extraDetails; }
