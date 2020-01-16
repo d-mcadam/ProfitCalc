@@ -2,9 +2,10 @@ package com.example.profitcalcapp.Data;
 
 import com.example.profitcalcapp.Utilities.BooleanString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Storage {
+public class Storage implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Categories">
     private ArrayList<Category> categories = new ArrayList<>();
