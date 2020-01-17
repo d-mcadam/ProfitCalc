@@ -9,6 +9,7 @@
     //Category activity
 
     //Settings activity
+    <string name="settings_toggle_description">Using the Wealth Evaluator? or Entering data manually?</string>
     <string name="settings_toggle_button_off">Using Wealth Evaluator</string>
     <string name="settings_toggle_button_on">Manually enter Gain/Loss</string>
 
