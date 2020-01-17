@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public class Storage implements Serializable {
 
+    //<editor-fold defaultstate="collapsed" desc="Settings">
+    public boolean usingEvaluator = true;
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Categories">
     private ArrayList<Category> categories = new ArrayList<>();
 
