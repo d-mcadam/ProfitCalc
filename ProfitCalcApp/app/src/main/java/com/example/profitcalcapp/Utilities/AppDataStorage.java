@@ -2,7 +2,6 @@ package com.example.profitcalcapp.Utilities;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.example.profitcalcapp.Activities.MainActivity;
 import com.example.profitcalcapp.Data.Storage;
@@ -67,7 +66,6 @@ public class AppDataStorage extends AsyncTask<Boolean, String, String> {
 
     @Override
     protected void onPostExecute(String result){
-        Toast.makeText(context, "Loaded Storage.", Toast.LENGTH_SHORT).show();
     }
 
 }
