@@ -17,4 +17,10 @@
     <string name="settings_toggle_button_off">Using Wealth Evaluator</string>
     <string name="settings_toggle_button_on">Manually enter Gain/Loss</string>
 
+    <string name="settings_aura_details">Total Auras:</string>
+    <string name="settings_aura_button">Manage Auras</string>
+
+    <string name="settings_default_details">Total Defaults:</string>
+    <string name="settings_default_button">Manage Defaults</string>
+
 </resources>
