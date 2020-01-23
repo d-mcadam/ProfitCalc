@@ -26,5 +26,6 @@
 
     //Aura Management activity
     <string name="aura_manage_title">Auras</string>
+    <string name="aura_manage_hint_text">Search for an Aura</string>
 
 </resources>
