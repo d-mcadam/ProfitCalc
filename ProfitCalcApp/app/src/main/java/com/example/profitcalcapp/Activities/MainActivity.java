@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+        }else{
+
+            Toast.makeText(getApplicationContext(), "Storage loaded successfully.", Toast.LENGTH_LONG).show();
+
         }
 
     }

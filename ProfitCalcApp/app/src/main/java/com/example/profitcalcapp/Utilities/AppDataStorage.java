@@ -1,5 +1,6 @@
 package com.example.profitcalcapp.Utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -15,12 +16,25 @@ import static com.example.profitcalcapp.Utilities.IntentKeys.APP_STORAGE_DATA;
 
 public class AppDataStorage extends AsyncTask<Boolean, String, String> {
 
-    private final Context context;
+    private final Activity oldActivity;
     private final Storage storage;
+    private final Class newActivity;
+    private final Commands cmds = new Commands();
 
-    public AppDataStorage(Context context, Storage storage){
-        this.context = context;
+    private final boolean savingData;
+
+    public AppDataStorage(Activity oldActivity, Storage storage){
+        this.oldActivity = oldActivity;
         this.storage = storage;
+        this.newActivity = null;
+        savingData = false;
+    }
+
+    public AppDataStorage(Activity oldActivity, Storage storage, Class newActivity){
+        this.oldActivity = oldActivity;
+        this.storage = storage;
+        this.newActivity = newActivity;
+        savingData = true;
     }
 
     @Override
@@ -35,13 +49,13 @@ public class AppDataStorage extends AsyncTask<Boolean, String, String> {
 
         try{
 
-            if (booleans.length > 0 && booleans[0]){
+            if (savingData){
 
                 //Load the data
-                fileInputStream = context.openFileInput(APP_STORAGE_DATA);
+                fileInputStream = oldActivity.getApplicationContext().openFileInput(APP_STORAGE_DATA);
                 objectInputStream = new ObjectInputStream(fileInputStream);
 
-                ((MainActivity)context).storage = (Storage) objectInputStream.readObject();
+                ((MainActivity)oldActivity.getApplicationContext()).storage = (Storage) objectInputStream.readObject();
 
                 objectInputStream.close();
                 fileInputStream.close();
@@ -49,7 +63,7 @@ public class AppDataStorage extends AsyncTask<Boolean, String, String> {
             }else {
 
                 //Save the data
-                fileOutputStream = context.openFileOutput(APP_STORAGE_DATA, Context.MODE_PRIVATE);
+                fileOutputStream = oldActivity.getApplicationContext().openFileOutput(APP_STORAGE_DATA, Context.MODE_PRIVATE);
                 objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(storage);
                 objectOutputStream.close();
@@ -66,6 +80,8 @@ public class AppDataStorage extends AsyncTask<Boolean, String, String> {
 
     @Override
     protected void onPostExecute(String result){
+        if (savingData && newActivity != null)
+            cmds.StartActivity(oldActivity, storage, newActivity);
     }
 
 }

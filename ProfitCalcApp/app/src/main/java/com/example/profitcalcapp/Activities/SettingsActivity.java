@@ -1,7 +1,10 @@
 package com.example.profitcalcapp.Activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,7 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Activity Views">
-
+    private Switch toggle;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Overridden Activity operations">
@@ -35,7 +38,26 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case 16908332:
-                cmds.StartActivity(this, storage, MainActivity.class);
+                if (CheckForUnsavedData()){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+                    dialog.setCancelable(true);
+                    dialog.setTitle("Unsaved data");
+                    dialog.setMessage("You will lose any unsaved data, do you want to continue?");
+
+                    dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SaveData(null);
+                        }
+                    });
+
+                    dialog.setNegativeButton("Cancel", null);
+
+                    dialog.create().show();
+                }else {
+                    cmds.StartActivity(this, storage, MainActivity.class);
+                }
                 break;
         }
         return true;
@@ -53,6 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Activity initialisation">
     private void init(){
 
         //<editor-fold defaultstate="collapsed" desc="Get Storage from Intent">
@@ -67,24 +90,45 @@ public class SettingsActivity extends AppCompatActivity {
 
         //<editor-fold defaultstate="collapsed" desc="Set up toggle">
         final TextView toggleWarning = findViewById(R.id.textViewToggleWarning);
-        final Switch toggle = findViewById(R.id.toggleUsingEval);
+        toggle = findViewById(R.id.toggleUsingEval);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isOn) {
-                SwitchToggle(compoundButton, toggleWarning);
+                SwitchToggle(toggleWarning);
             }
         });
 
+        //If the toggle is UNCHECKED, that means 'usingEvaluator' is true
+        //ie. toggle false = eval. true
         toggle.setChecked(!storage.usingEvaluator);
-        SwitchToggle(toggle, toggleWarning);
+        SwitchToggle(toggleWarning);
         //</editor-fold>
 
     }
 
-    private void SwitchToggle(CompoundButton compoundButton, View view){
-        boolean isOn = compoundButton.isChecked();
-        compoundButton.setText(isOn ? R.string.settings_toggle_button_on : R.string.settings_toggle_button_off);
+    //<editor-fold defaultstate="collapsed" desc="Used only in init()">
+    private void SwitchToggle(View view){
+        boolean isOn = toggle.isChecked();
+        toggle.setText(isOn ? R.string.settings_toggle_button_on : R.string.settings_toggle_button_off);
         view.setVisibility(isOn ? View.INVISIBLE : View.VISIBLE);
     }
+    //</editor-fold>
+
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="'Loose' methods">
+    private boolean CheckForUnsavedData(){
+        //If the toggle is UNCHECKED, that means 'usingEvaluator' is true
+        //ie. toggle false = eval. true
+        return toggle.isChecked() != !storage.usingEvaluator;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="View actions">
+    public void SaveData(View view){
+        storage.usingEvaluator = !toggle.isChecked();
+        cmds.SaveAndStartActivity(this, storage, MainActivity.class);
+    }
+    //</editor-fold>
 
 }
