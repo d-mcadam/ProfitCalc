@@ -83,6 +83,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#F5F5F5"
+        android:onClick="OpenAuraManagement"
         android:text="@string/settings_aura_button"
         android:textAllCaps="false"
         android:textSize="18sp"

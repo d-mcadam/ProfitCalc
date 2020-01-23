@@ -142,6 +142,10 @@ public class SettingsActivity extends AppCompatActivity {
         storage.usingEvaluator = !toggle.isChecked();
         cmds.SaveAndStartActivity(this, storage, MainActivity.class);
     }
+
+    public void OpenAuraManagement(View view){
+        cmds.StartActivity(this, storage, AuraManagementActivity.class);
+    }
     //</editor-fold>
 
 }
