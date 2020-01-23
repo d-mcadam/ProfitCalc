@@ -108,6 +108,13 @@ public class SettingsActivity extends AppCompatActivity {
         SwitchToggle(toggleWarning);
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Aura and Default counts">
+        final TextView auraDetails = findViewById(R.id.textViewAuraDetails);
+        final TextView defaultDetails = findViewById(R.id.textViewDefaultDetails);
+        auraDetails.setText(String.valueOf(storage.getAuras().size()));
+        defaultDetails.setText(String.valueOf(storage.getDefaultEntryObjects().size()));
+        //</editor-fold>
+
     }
 
     //<editor-fold defaultstate="collapsed" desc="Used only in init()">
