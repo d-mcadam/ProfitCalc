@@ -2,6 +2,9 @@
 
     <string name="app_name">ProfitCalcApp</string>
 
+    //Generic text
+    <string name="text_save">Save</string>
+
     //Main activity
     <string name="main_categories_button">Categories</string>
     <string name="main_settings_button">Settings</string>
