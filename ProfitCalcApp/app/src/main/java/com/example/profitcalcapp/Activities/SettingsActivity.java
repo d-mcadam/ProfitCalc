@@ -63,6 +63,8 @@ public class SettingsActivity extends AppCompatActivity {
                     cmds.StartActivity(this, storage, MainActivity.class);
                 }
                 break;
+            default:
+                break;
         }
         return true;
     }
