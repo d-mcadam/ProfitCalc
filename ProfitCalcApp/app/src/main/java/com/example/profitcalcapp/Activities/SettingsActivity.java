@@ -63,6 +63,8 @@ public class SettingsActivity extends AppCompatActivity {
                     cmds.StartActivity(this, storage, MainActivity.class);
                 }
                 break;
+            default:
+                break;
         }
         return true;
     }
@@ -108,6 +110,13 @@ public class SettingsActivity extends AppCompatActivity {
         SwitchToggle(toggleWarning);
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Aura and Default counts">
+        final TextView auraDetails = findViewById(R.id.textViewAuraDetails);
+        final TextView defaultDetails = findViewById(R.id.textViewDefaultDetails);
+        auraDetails.setText(String.valueOf(storage.getAuras().size()));
+        defaultDetails.setText(String.valueOf(storage.getDefaultEntryObjects().size()));
+        //</editor-fold>
+
     }
 
     //<editor-fold defaultstate="collapsed" desc="Used only in init()">
@@ -132,6 +141,10 @@ public class SettingsActivity extends AppCompatActivity {
     public void SaveData(View view){
         storage.usingEvaluator = !toggle.isChecked();
         cmds.SaveAndStartActivity(this, storage, MainActivity.class);
+    }
+
+    public void OpenAuraManagement(View view){
+        cmds.StartActivity(this, storage, AuraManagementActivity.class);
     }
     //</editor-fold>
 

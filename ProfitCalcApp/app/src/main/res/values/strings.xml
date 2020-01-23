@@ -4,6 +4,7 @@
 
     //Generic text
     <string name="text_save">Save</string>
+    <string name="text_placeholder_xxxx">XXXX</string>
 
     //Main activity
     <string name="main_categories_button">Categories</string>
@@ -16,5 +17,15 @@
     <string name="settings_toggle_warning">Requires Wealth Evaluator Unlocked</string>
     <string name="settings_toggle_button_off">Using Wealth Evaluator</string>
     <string name="settings_toggle_button_on">Manually enter Gain/Loss</string>
+
+    <string name="settings_aura_details">Total Auras:</string>
+    <string name="settings_aura_button">Manage Auras</string>
+
+    <string name="settings_default_details">Total Defaults:</string>
+    <string name="settings_default_button">Manage Defaults</string>
+
+    //Aura Management activity
+    <string name="aura_manage_title">Auras</string>
+    <string name="aura_manage_hint_text">Search for an Aura</string>
 
 </resources>
