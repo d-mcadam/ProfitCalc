@@ -5,4 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <string name="green">#00FF00</string>
     <string name="grey">#808080</string>
+
+    <color name="originalWhite">#ffffff</color>
+    <color name="selectedGrey">#cccccc</color>
 </resources>
