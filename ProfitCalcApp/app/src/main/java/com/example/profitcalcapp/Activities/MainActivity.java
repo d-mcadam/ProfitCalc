@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 storage = new Storage();
             }
 
-        }else{ Toast.makeText(getApplicationContext(), "Storage parsed successfully.", Toast.LENGTH_LONG).show(); }
+        }
         //</editor-fold>
 
     }
