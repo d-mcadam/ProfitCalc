@@ -24,4 +24,7 @@
     <string name="settings_default_details">Total Defaults:</string>
     <string name="settings_default_button">Manage Defaults</string>
 
+    //Aura Management activity
+    <string name="aura_manage_title">Auras</string>
+
 </resources>
