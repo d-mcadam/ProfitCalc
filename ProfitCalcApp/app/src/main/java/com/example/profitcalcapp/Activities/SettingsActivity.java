@@ -31,13 +31,17 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch toggle;
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Variables">
+    private final Activity thisActivity = this;
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Overridden Activity operations">
 
-    //<editor-fold defaultstate="collapsed" desc="The provided back button operation">
+    //<editor-fold defaultstate="collapsed" desc="The provided button operation">
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case 16908332:
+            case 16908332://this is the ID code for a generic "Back" button that's provided by the api
                 if (CheckForUnsavedData()){
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
@@ -45,14 +49,14 @@ public class SettingsActivity extends AppCompatActivity {
                     dialog.setTitle("Unsaved data");
                     dialog.setMessage("You will lose any unsaved data, do you want to continue?");
 
-                    dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    dialog.setNegativeButton("Go Back", null);
+
+                    dialog.setPositiveButton("Discard Changes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            SaveData(null);
+                            cmds.StartActivity(thisActivity, storage, MainActivity.class);
                         }
                     });
-
-                    dialog.setNegativeButton("Cancel", null);
 
                     dialog.create().show();
                 }else {

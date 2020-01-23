@@ -3,6 +3,7 @@ package com.example.profitcalcapp.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,8 @@ import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.AppDataStorage;
 import com.example.profitcalcapp.Utilities.Commands;
+
+import java.util.concurrent.ExecutionException;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
@@ -33,19 +36,31 @@ public class MainActivity extends AppCompatActivity {
 
         if (storage == null){
 
-            Toast.makeText(getApplicationContext(), "Storage was null, loading data file...", Toast.LENGTH_LONG).show();
-            new AppDataStorage(this, storage).execute(true);
+            Toast.makeText(getApplicationContext(), "Loading data file...", Toast.LENGTH_LONG).show();
 
-            if (storage == null){
+            try {
 
-                Toast.makeText(getApplicationContext(), "Storage was empty, initialising...", Toast.LENGTH_SHORT).show();
+                new AppDataStorage(this, storage).execute(true).get();
+
+                if (storage == null){
+
+                    Toast.makeText(getApplicationContext(), "Storage was empty, initialising...", Toast.LENGTH_LONG).show();
+                    storage = new Storage();
+
+                }
+
+            } catch (ExecutionException | InterruptedException e) {
+
+                e.printStackTrace();
+
+                Toast.makeText(getApplicationContext(), "Failed to retrieve data, initialising...", Toast.LENGTH_LONG).show();
                 storage = new Storage();
 
             }
 
         }else{
 
-            Toast.makeText(getApplicationContext(), "Storage loaded successfully.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Storage parsed successfully.", Toast.LENGTH_LONG).show();
 
         }
 
