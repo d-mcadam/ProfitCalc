@@ -9,6 +9,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.profitcalcapp.Data.Aura;
@@ -42,6 +43,10 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     protected void ResetViewHolder(RecyclerView.ViewHolder holder){
         holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.originalWhite));
+        ((Item) holder).edit.setVisibility(View.INVISIBLE);
+        ((Item) holder).edit.setClickable(false);
+        ((Item) holder).delete.setVisibility(View.INVISIBLE);
+        ((Item) holder).delete.setClickable(false);
     }
 
     @Override
@@ -68,7 +73,18 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 notifyDataSetChanged();
             }
         });
-        //you can set additional listeners for buttons
+        ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -77,6 +93,8 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public class Item extends RecyclerView.ViewHolder{
         TextView title;
+        ImageButton edit;
+        ImageButton delete;
 
         public Item(View itemView){
             super(itemView);
