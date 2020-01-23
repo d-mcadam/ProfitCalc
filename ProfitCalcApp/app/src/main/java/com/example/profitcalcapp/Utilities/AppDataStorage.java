@@ -15,29 +15,34 @@ import static com.example.profitcalcapp.Utilities.IntentKeys.APP_STORAGE_DATA;
 
 public class AppDataStorage extends AsyncTask<Boolean, String, String> {
 
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private final Context context;
     private final Storage storage;
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     public AppDataStorage(Context context, Storage storage){
         this.context = context;
         this.storage = storage;
     }
+    //</editor-fold>
 
     @Override
     protected String doInBackground(Boolean... booleans){
 
-        //save data before leaving
+        //<editor-fold defaultstate="collapsed" desc="Variable declaration">
         FileOutputStream fileOutputStream;
         ObjectOutputStream objectOutputStream;
 
         FileInputStream fileInputStream;
         ObjectInputStream objectInputStream;
+        //</editor-fold>
 
         try{
 
             if (booleans.length > 0 && booleans[0]){
 
-                //Load the data
+                //<editor-fold defaultstate="collapsed" desc="Loading data">
                 fileInputStream = context.openFileInput(APP_STORAGE_DATA);
                 objectInputStream = new ObjectInputStream(fileInputStream);
 
@@ -45,15 +50,17 @@ public class AppDataStorage extends AsyncTask<Boolean, String, String> {
 
                 objectInputStream.close();
                 fileInputStream.close();
+                //</editor-fold>
 
             }else {
 
-                //Save the data
+                //<editor-fold defaultstate="collapsed" desc="Saving data">
                 fileOutputStream = context.openFileOutput(APP_STORAGE_DATA, Context.MODE_PRIVATE);
                 objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(storage);
                 objectOutputStream.close();
                 fileOutputStream.close();
+                //</editor-fold>
 
             }
 
