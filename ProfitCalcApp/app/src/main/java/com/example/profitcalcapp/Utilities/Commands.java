@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.profitcalcapp.Data.Aura;
+import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.Storage;
 
 import java.util.concurrent.ExecutionException;
@@ -54,6 +55,16 @@ public class Commands {
     public boolean SatisfiesSearchQuery(Aura aura, String query){
         return query.toLowerCase().trim().equals("") ||
                 aura.getTitle().toLowerCase().trim().contains(query.toLowerCase());
+    }
+
+    /**
+     * Checks the specified category satisfies the search query
+     * @param category  The category being checked
+     * @param query     The string search query
+     * @return          True if the Category matches the search query, false otherwise.
+     */
+    public boolean SatisfiesSearchQuery(Category category, String query){
+        return query.toLowerCase().trim().equals("");
     }
 
 }
