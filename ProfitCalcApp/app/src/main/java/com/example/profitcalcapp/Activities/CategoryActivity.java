@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
+import static com.example.profitcalcapp.Utilities.IntentKeys.STRING_PASS_KEY;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -115,7 +116,11 @@ public class CategoryActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="View actions">
     public void AddCategory(View view){
-
+        Intent wnd = new Intent(this, CreateCategoryActivity.class);
+        wnd.putExtra(STORAGE_CLASS_DATA, storage);
+        wnd.putExtra(STRING_PASS_KEY, searchField.getText().toString().trim());
+        startActivity(wnd);
+        finish();
     }
     //</editor-fold>
 
