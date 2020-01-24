@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.profitcalcapp.Data.Aura;
+import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 
@@ -23,11 +23,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Commands cmds = new Commands();
 
     private Context context;
-    private List<Aura> items;
+    private List<Category> items;
 
     public int focusedPosition = -1;
 
-    public CategoryAdapter(Context context, List<Aura> items, Storage storage){
+    public CategoryAdapter(Context context, List<Category> items, Storage storage){
         this.context = context;
         this.items = items;
         this.storage = storage;
@@ -55,7 +55,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
         final int selectedColour = context.getResources().getColor(R.color.selectedGrey, null);
-        final Aura item = items.get(position);
+        final Category item = items.get(position);
         ((Item)holder).title.setText(item.getTitle());
 
         if (focusedPosition == position){
