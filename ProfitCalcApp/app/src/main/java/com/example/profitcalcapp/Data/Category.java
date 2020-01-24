@@ -2,9 +2,10 @@ package com.example.profitcalcapp.Data;
 
 import com.example.profitcalcapp.Utilities.BooleanString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Category {
+public class Category implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private String title = "";

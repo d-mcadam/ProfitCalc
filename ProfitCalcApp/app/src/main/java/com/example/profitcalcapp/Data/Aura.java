@@ -1,6 +1,8 @@
 package com.example.profitcalcapp.Data;
 
-public class Aura {
+import java.io.Serializable;
+
+public class Aura implements Serializable {
 
     private String title = "";
 

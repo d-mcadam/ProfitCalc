@@ -1,6 +1,8 @@
 package com.example.profitcalcapp.Data;
 
-public class DefaultEntryObject {
+import java.io.Serializable;
+
+public class DefaultEntryObject implements Serializable {
 
     private String title = "";
     private double priceEach = 0.0;
