@@ -85,7 +85,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((Item) holder).view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
             }
         });
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
