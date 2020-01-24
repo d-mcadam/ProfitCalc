@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
+import static com.example.profitcalcapp.Utilities.IntentKeys.STRING_PASS_KEY;
 
 public class AuraManagementActivity extends AppCompatActivity {
 
@@ -119,7 +120,11 @@ public class AuraManagementActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="View actions">
     public void AddAura(View view){
-        cmds.StartActivity(this, storage, CreateAuraActivity.class);
+        Intent wnd = new Intent(this, CreateAuraActivity.class);
+        wnd.putExtra(STORAGE_CLASS_DATA, storage);
+        wnd.putExtra(STRING_PASS_KEY, searchField.getText().toString().trim());
+        startActivity(wnd);
+        finish();
     }
     //</editor-fold>
 
