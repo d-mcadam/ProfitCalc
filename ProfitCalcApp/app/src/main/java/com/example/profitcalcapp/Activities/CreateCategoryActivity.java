@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
+import com.example.profitcalcapp.Utilities.BooleanString;
 import com.example.profitcalcapp.Utilities.CategoryAdapter;
 import com.example.profitcalcapp.Utilities.Commands;
 
@@ -151,7 +153,21 @@ public class CreateCategoryActivity extends AppCompatActivity {
 
         buttonSave.setClickable(eligible);
         buttonSave.setBackgroundColor(colour);
-        buttonSave.setTooltipText(eligible ? "Save Aura" : !titleExists ? "Need a title" : "Duplicate Title");
+        buttonSave.setTooltipText(eligible ? "Save Category" : !titleExists ? "Need a title" : "Duplicate Title");
+    }
+
+    public void SaveCategory(View view){
+        String title = fieldCategoryTitle.getText().toString().trim();
+
+        Category category = new Category(title);
+        BooleanString r = storage.addCategory(category);
+
+        if (!r.result){
+            Toast.makeText(getApplicationContext(), r.msg, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        cmds.SaveAndStartActivity(this, storage, CategoryActivity.class);
     }
 
 }
