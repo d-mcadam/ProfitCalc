@@ -90,7 +90,7 @@ public class AuraManagementActivity extends AppCompatActivity {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise search box">
-        searchField = findViewById(R.id.editTextSearchBox);
+        searchField = findViewById(R.id.editTextSearchAuras);
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { RefreshList(); }
