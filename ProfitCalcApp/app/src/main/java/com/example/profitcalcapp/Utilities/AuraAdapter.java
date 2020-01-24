@@ -43,7 +43,7 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     protected void ResetViewHolder(RecyclerView.ViewHolder holder){
-        holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.originalWhite));
+        holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.originalWhite, null));
         ((Item) holder).edit.setVisibility(View.INVISIBLE);
         ((Item) holder).edit.setClickable(false);
         ((Item) holder).delete.setVisibility(View.INVISIBLE);
@@ -53,7 +53,7 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
-        final int selectedColour = context.getResources().getColor(R.color.selectedGrey);
+        final int selectedColour = context.getResources().getColor(R.color.selectedGrey, null);
         final Aura item = items.get(position);
         ((Item)holder).title.setText(item.getTitle());
 
