@@ -2,8 +2,8 @@ package com.example.profitcalcapp.Utilities;
 
 public class BooleanString {
 
-    private final String msg;
-    private final boolean result;
+    public final String msg;
+    public final boolean result;
 
     public BooleanString(){
         this.msg = "success";
