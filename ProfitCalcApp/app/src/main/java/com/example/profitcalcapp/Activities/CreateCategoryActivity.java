@@ -2,6 +2,8 @@ package com.example.profitcalcapp.Activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -17,7 +19,11 @@ import android.widget.Toast;
 import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
+import com.example.profitcalcapp.Utilities.CategoryAdapter;
 import com.example.profitcalcapp.Utilities.Commands;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
@@ -29,8 +35,14 @@ public class CreateCategoryActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Activity Views">
+    private CategoryAdapter categoryAdapter;
+    private RecyclerView recyclerView;
     private EditText fieldCategoryTitle;
     private Button buttonSave;
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Variables">
+    private List<Category> items = new ArrayList<>();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
@@ -91,6 +103,13 @@ public class CreateCategoryActivity extends AppCompatActivity {
 
         //<editor-fold defaultstate="collapsed" desc="Reference activity Views">
         buttonSave = findViewById(R.id.buttonSaveCategory);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise recycler view list">
+        categoryAdapter = new CategoryAdapter(this, items, storage);
+        recyclerView = findViewById(R.id.recyclerViewDataEntryList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(categoryAdapter);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise title field">
