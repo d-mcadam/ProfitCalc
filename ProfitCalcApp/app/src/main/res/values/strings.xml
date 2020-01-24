@@ -12,6 +12,7 @@
     <string name="main_settings_button">Settings</string>
 
     //Category activity
+    <string name="category_manage_hint_text">Search for a Category</string>
 
     //Settings activity
     <string name="settings_toggle_description">Using the Wealth Evaluator? or Entering data manually?</string>
