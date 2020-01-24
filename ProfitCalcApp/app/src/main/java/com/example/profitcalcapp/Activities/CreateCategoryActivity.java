@@ -48,6 +48,7 @@ public class CreateCategoryActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private List<DataEntry> items = new ArrayList<>();
+    private List<DataEntry> collection = new ArrayList<>();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
@@ -147,7 +148,13 @@ public class CreateCategoryActivity extends AppCompatActivity {
     }
 
     public void RefreshList(){
+        items.clear();
+        for (DataEntry dataEntry : collection)
+            if (cmds.SatisfiesSearchQuery(dataEntry, searchField.getText().toString()))
+                items.add(dataEntry);
 
+        dataEntryAdapter.focusedPosition = -1;
+        dataEntryAdapter.notifyDataSetChanged();
     }
 
     private boolean DuplicateTitle(){
