@@ -1,6 +1,8 @@
 package com.example.profitcalcapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +12,14 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
+import com.example.profitcalcapp.Utilities.CategoryAdapter;
 import com.example.profitcalcapp.Utilities.Commands;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
@@ -24,11 +31,13 @@ public class CategoryActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Activity Views">
+    private CategoryAdapter categoryAdapter;
+    private RecyclerView recyclerView;
     private EditText searchField;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-
+    private List<Category> items = new ArrayList<>();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Overridden Activity operations">
@@ -68,6 +77,13 @@ public class CategoryActivity extends AppCompatActivity {
         }
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Initialise recycler view">
+        categoryAdapter = new CategoryAdapter(this, items, storage);
+        recyclerView = findViewById(R.id.recyclerViewCategoryList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(categoryAdapter);
+        //</editor-fold>
+
         //<editor-fold defaultstate="collapsed" desc="Initialise search box">
         searchField = findViewById(R.id.editTextSearchCategories);
         searchField.addTextChangedListener(new TextWatcher() {
@@ -80,11 +96,19 @@ public class CategoryActivity extends AppCompatActivity {
         });
         //</editor-fold>
 
+        RefreshList();
+
     }
 
     //<editor-fold defaultstate="collapsed" desc="List operations">
     public void RefreshList(){
+        items.clear();
+        for (Category category : storage.getCategories())
+            if (cmds.SatisfiesSearchQuery(category, searchField.getText().toString()))
+                items.add(category);
 
+        categoryAdapter.focusedPosition = -1;
+        categoryAdapter.notifyDataSetChanged();
     }
     //</editor-fold>
 
