@@ -25,6 +25,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private List<Category> items;
 
+    private final int rowParent = 1429;
+    private final int defaultDivision = 12;
+    private final int expandedDivision = 8;
+
     public int focusedPosition = -1;
 
     public CategoryAdapter(Context context, List<Category> items, Storage storage){
@@ -37,11 +41,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View row = LayoutInflater.from(context).inflate(R.layout.custom_row_category, parent, false);
-        row.getLayoutParams().height = parent.getMeasuredHeight() / 12;
+        row.getLayoutParams().height = rowParent / defaultDivision;
         return new Item(row);
     }
 
     protected void ResetViewHolder(RecyclerView.ViewHolder holder){
+        holder.itemView.getLayoutParams().height = rowParent / defaultDivision;
         holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.originalWhite, null));
         ((Item) holder).view.setVisibility(View.INVISIBLE);
         ((Item) holder).view.setClickable(false);
@@ -60,6 +65,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (focusedPosition == position){
             if (((ColorDrawable)holder.itemView.getBackground()).getColor() != selectedColour){
+                holder.itemView.getLayoutParams().height = rowParent / expandedDivision;
                 holder.itemView.setBackgroundColor(selectedColour);
                 ((Item) holder).view.setVisibility(View.VISIBLE);
                 ((Item) holder).view.setClickable(true);
