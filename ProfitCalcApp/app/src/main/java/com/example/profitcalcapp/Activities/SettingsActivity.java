@@ -42,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case 16908332://this is the ID code for a generic "Back" button that's provided by the api
-                if (CheckForUnsavedData()){
+                if (UnsavedData()){
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
                     dialog.setCancelable(true);
@@ -67,6 +67,11 @@ public class SettingsActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+    private boolean UnsavedData(){
+        //If the toggle is UNCHECKED, that means 'usingEvaluator' is true
+        //ie. toggle false = eval. true
+        return toggle.isChecked() != !storage.usingEvaluator;
     }
     //</editor-fold>
 
@@ -127,14 +132,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
     //</editor-fold>
 
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="'Loose' methods">
-    private boolean CheckForUnsavedData(){
-        //If the toggle is UNCHECKED, that means 'usingEvaluator' is true
-        //ie. toggle false = eval. true
-        return toggle.isChecked() != !storage.usingEvaluator;
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="View actions">
