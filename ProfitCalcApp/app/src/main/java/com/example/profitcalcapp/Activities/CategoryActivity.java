@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -109,6 +110,12 @@ public class CategoryActivity extends AppCompatActivity {
 
         categoryAdapter.focusedPosition = -1;
         categoryAdapter.notifyDataSetChanged();
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="View actions">
+    public void AddCategory(View view){
+
     }
     //</editor-fold>
 

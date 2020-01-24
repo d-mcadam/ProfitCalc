@@ -29,7 +29,6 @@ import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final Storage storage;
-    private final Commands cmds = new Commands();
 
     private Context context;
     private List<Aura> items;
