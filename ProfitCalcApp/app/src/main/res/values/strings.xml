@@ -14,6 +14,12 @@
     //Category activity
     <string name="category_manage_hint_text">Search for a Category</string>
 
+    //Create Category activity
+    <string name="create_category_title">Add a Category</string>
+    <string name="create_category_name_label">Name:</string>
+    <string name="create_category_name_hint">The name to search by</string>
+    <string name="create_category_search_entry_hint">Search entries</string>
+
     //Settings activity
     <string name="settings_toggle_description">Using the Wealth Evaluator? or Entering data manually?</string>
     <string name="settings_toggle_warning">Requires Wealth Evaluator Unlocked</string>
