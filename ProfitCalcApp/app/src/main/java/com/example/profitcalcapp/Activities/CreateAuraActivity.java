@@ -21,7 +21,9 @@ import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.BooleanString;
 import com.example.profitcalcapp.Utilities.Commands;
 
+import static com.example.profitcalcapp.Utilities.IntentKeys.EDIT_AURA_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
+import static com.example.profitcalcapp.Utilities.IntentKeys.STRING_PASS_KEY;
 
 public class CreateAuraActivity extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class CreateAuraActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private final Activity thisActivity = this;
+    private Aura editingAura = null;
     //</editor-fold>
 
     @Override
@@ -70,7 +73,8 @@ public class CreateAuraActivity extends AppCompatActivity {
         return true;
     }
     private boolean UnsavedData(){
-        return !fieldAuraTitle.getText().toString().trim().equals("");
+        String title = fieldAuraTitle.getText().toString().trim();
+        return editingAura == null ? !title.equals("") : !editingAura.getTitle().equals(title);
     }
 
     @Override
@@ -108,6 +112,16 @@ public class CreateAuraActivity extends AppCompatActivity {
         });
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Set edit data, if any">
+        editingAura = (Aura) intent.getSerializableExtra(EDIT_AURA_KEY);
+        if (editingAura != null){
+            buttonSave.setText(R.string.text_update);
+            fieldAuraTitle.setText(editingAura.getTitle());
+        }else{
+            fieldAuraTitle.setText(intent.getStringExtra(STRING_PASS_KEY));
+        }
+        //</editor-fold>
+
         CheckSaveEligibility();
 
     }
@@ -115,6 +129,9 @@ public class CreateAuraActivity extends AppCompatActivity {
     private boolean DuplicateTitle(){
 
         for (Aura aura : storage.getAuras()){
+            if (editingAura != null && aura.getTitle().equals(editingAura.getTitle()))
+                continue;
+
             if (aura.getTitle().toLowerCase().equals(fieldAuraTitle.getText().toString().toLowerCase().trim())){
                 fieldAuraTitle.setError("Aura name already exists");
                 return true;
@@ -125,7 +142,6 @@ public class CreateAuraActivity extends AppCompatActivity {
     }
 
     private void CheckSaveEligibility(){
-
         boolean titleExists = !fieldAuraTitle.getText().toString().trim().equals("");
         if (!titleExists)
             fieldAuraTitle.setError("Title cannot be empty");
@@ -137,20 +153,32 @@ public class CreateAuraActivity extends AppCompatActivity {
         buttonSave.setClickable(eligible);
         buttonSave.setBackgroundColor(colour);
         buttonSave.setTooltipText(eligible ? "Save Aura" : !titleExists ? "Need a title" : "Duplicate Title");
-
     }
 
     public void SaveAura(View view){
+        String title = fieldAuraTitle.getText().toString().trim();
 
-        Aura aura = new Aura(fieldAuraTitle.getText().toString().trim());
-        BooleanString r = storage.addAura(aura);
-        if (!r.result){
-            Toast.makeText(getApplicationContext(), r.msg, Toast.LENGTH_LONG).show();
-            return;
+        if (editingAura == null) {
+
+            Aura aura = new Aura(title);
+            BooleanString r = storage.addAura(aura);
+
+            if (!r.result) {
+                Toast.makeText(getApplicationContext(), r.msg, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+        }else{
+
+            for (Aura aura : storage.getAuras())
+                if (aura.getTitle().equals(editingAura.getTitle())){
+                    aura.setTitle(title);
+                    break;
+                }
+
         }
 
         cmds.SaveAndStartActivity(this, storage, AuraManagementActivity.class);
-
     }
 
 }
