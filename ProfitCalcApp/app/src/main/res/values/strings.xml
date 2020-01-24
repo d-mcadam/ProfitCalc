@@ -28,4 +28,9 @@
     <string name="aura_manage_title">Auras</string>
     <string name="aura_manage_hint_text">Search for an Aura</string>
 
+    //Create Aura activity
+    <string name="create_aura_title">Add an Aura</string>
+    <string name="create_aura_name_label">Name:</string>
+    <string name="create_aura_name_hint">Enter the name of the Aura</string>
+
 </resources>
