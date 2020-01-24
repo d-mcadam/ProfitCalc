@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -12,11 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.profitcalcapp.Activities.AuraManagementActivity;
+import com.example.profitcalcapp.Activities.CreateAuraActivity;
 import com.example.profitcalcapp.Data.Aura;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 
 import java.util.List;
+
+import static com.example.profitcalcapp.Utilities.IntentKeys.EDIT_AURA_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -82,7 +88,11 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent wnd = new Intent(context, CreateAuraActivity.class);
+                wnd.putExtra(EDIT_AURA_KEY, items.get(position));
+                wnd.putExtra(STORAGE_CLASS_DATA, storage);
+                context.startActivity(wnd);
+                ((AuraManagementActivity)context).finish();
             }
         });
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
