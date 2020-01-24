@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.profitcalcapp.Data.Aura;
+import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final Storage storage;
+    private final Commands cmds = new Commands();
 
     private Context context;
     private List<Aura> items;
@@ -37,8 +39,7 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View row = LayoutInflater.from(context).inflate(R.layout.custom_row_aura, parent, false);
         row.getLayoutParams().height = parent.getMeasuredHeight() / 12;
-        Item item = new Item(row);
-        return item;
+        return new Item(row);
     }
 
     protected void ResetViewHolder(RecyclerView.ViewHolder holder){
@@ -59,6 +60,10 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         if (focusedPosition == position){
             if (((ColorDrawable)holder.itemView.getBackground()).getColor() != selectedColour){
                 holder.itemView.setBackgroundColor(selectedColour);
+                ((Item) holder).edit.setVisibility(View.VISIBLE);
+                ((Item) holder).edit.setClickable(true);
+                ((Item) holder).delete.setVisibility(View.VISIBLE);
+                ((Item) holder).delete.setClickable(true);
             }else{
                 ResetViewHolder(holder);
             }
@@ -73,6 +78,7 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 notifyDataSetChanged();
             }
         });
+
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +105,8 @@ public class AuraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public Item(View itemView){
             super(itemView);
             title = itemView.findViewById(R.id.rowTitleAura);
+            edit = itemView.findViewById(R.id.rowButtonEditAura);
+            delete = itemView.findViewById(R.id.rowButtonDeleteAura);
         }
     }
 
