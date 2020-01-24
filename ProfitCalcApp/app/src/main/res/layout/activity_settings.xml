@@ -66,7 +66,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="40dp"
-        android:backgroundTint="#00FF00"
+        android:background="@color/pureGreen"
         android:onClick="SaveData"
         android:text="@string/text_save"
         android:textAllCaps="false"

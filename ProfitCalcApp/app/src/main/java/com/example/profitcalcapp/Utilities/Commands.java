@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.example.profitcalcapp.Data.Aura;
 import com.example.profitcalcapp.Data.Storage;
 
 import java.util.concurrent.ExecutionException;
@@ -42,6 +43,17 @@ public class Commands {
             e.printStackTrace();
             Toast.makeText(oldActivity.getApplicationContext(), "An error occurred attempting to save the data.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Checks the specified aura satisfies the search query.
+     * @param aura  The aura being checked.
+     * @param query The string search query.
+     * @return      True if the Aura matches the search query in any way, false otherwise.
+     */
+    public boolean SatisfiesSearchQuery(Aura aura, String query){
+        return query.toLowerCase().trim().equals("") ||
+                aura.getTitle().toLowerCase().trim().contains(query.toLowerCase());
     }
 
 }

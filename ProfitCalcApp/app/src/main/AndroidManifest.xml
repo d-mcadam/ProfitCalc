@@ -10,8 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.CreateAuraActivity"
+            android:parentActivityName=".Activities.AuraManagementActivity"/>
+        <activity
             android:name=".Activities.AuraManagementActivity"
-            android:parentActivityName=".Activities.SettingsActivity"></activity>
+            android:parentActivityName=".Activities.SettingsActivity" />
         <activity
             android:name=".Activities.SettingsActivity"
             android:parentActivityName=".Activities.MainActivity" />

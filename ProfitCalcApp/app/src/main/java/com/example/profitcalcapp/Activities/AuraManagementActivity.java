@@ -1,24 +1,45 @@
 package com.example.profitcalcapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.profitcalcapp.Data.Aura;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
+import com.example.profitcalcapp.Utilities.AuraAdapter;
 import com.example.profitcalcapp.Utilities.Commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
+import static com.example.profitcalcapp.Utilities.IntentKeys.STRING_PASS_KEY;
 
 public class AuraManagementActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="Data Classes">
     private Storage storage;
     private final Commands cmds = new Commands();
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Activity Views">
+    private AuraAdapter auraAdapter;
+    private RecyclerView recyclerView;
+    private EditText searchField;
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Variables">
+    private List<Aura> items = new ArrayList<>();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Overridden Activity operations">
@@ -61,6 +82,49 @@ public class AuraManagementActivity extends AppCompatActivity {
         }
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Initialise recycler view list">
+        auraAdapter = new AuraAdapter(this, items, storage);
+        recyclerView = findViewById(R.id.recyclerViewAuraList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(auraAdapter);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise search box">
+        searchField = findViewById(R.id.editTextSearchBox);
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { RefreshList(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { RefreshList(); }
+            @Override
+            public void afterTextChanged(Editable editable) { RefreshList(); }
+        });
+        //</editor-fold>
+
+        RefreshList();
+
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="List operations">
+    public void RefreshList(){
+        items.clear();
+        for (Aura aura : storage.getAuras())
+            if (cmds.SatisfiesSearchQuery(aura, searchField.getText().toString()))
+                items.add(aura);
+
+        auraAdapter.focusedPosition = -1;
+        auraAdapter.notifyDataSetChanged();
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="View actions">
+    public void AddAura(View view){
+        Intent wnd = new Intent(this, CreateAuraActivity.class);
+        wnd.putExtra(STORAGE_CLASS_DATA, storage);
+        wnd.putExtra(STRING_PASS_KEY, searchField.getText().toString().trim());
+        startActivity(wnd);
+        finish();
     }
     //</editor-fold>
 

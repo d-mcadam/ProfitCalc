@@ -1,6 +1,8 @@
 package com.example.profitcalcapp.Data;
 
-public class DataEntry {
+import java.io.Serializable;
+
+public class DataEntry implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
 
