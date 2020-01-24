@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.profitcalcapp.Data.Aura;
 import com.example.profitcalcapp.Data.Category;
+import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 
 import java.util.concurrent.ExecutionException;
@@ -64,6 +65,16 @@ public class Commands {
      * @return          True if the Category matches the search query, false otherwise.
      */
     public boolean SatisfiesSearchQuery(Category category, String query){
+        return query.toLowerCase().trim().equals("");
+    }
+
+    /**
+     *
+     * @param dataEntry The DataEntry being checked
+     * @param query     The string search query
+     * @return          True if the DataEntry matches the search query, false otherwise.
+     */
+    public boolean SatisfiesSearchQuery(DataEntry dataEntry, String query){
         return query.toLowerCase().trim().equals("");
     }
 
