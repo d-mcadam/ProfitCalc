@@ -4,6 +4,7 @@
 
     //Generic text
     <string name="text_save">Save</string>
+    <string name="text_update">Update</string>
     <string name="text_placeholder_xxxx">XXXX</string>
 
     //Main activity
