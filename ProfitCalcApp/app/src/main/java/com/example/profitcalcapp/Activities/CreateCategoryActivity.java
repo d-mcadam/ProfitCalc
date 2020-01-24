@@ -18,11 +18,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.profitcalcapp.Data.Category;
+import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.BooleanString;
 import com.example.profitcalcapp.Utilities.CategoryAdapter;
 import com.example.profitcalcapp.Utilities.Commands;
+import com.example.profitcalcapp.Utilities.DataEntryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +39,15 @@ public class CreateCategoryActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Activity Views">
-    private CategoryAdapter categoryAdapter;
+    private DataEntryAdapter dataEntryAdapter;
     private RecyclerView recyclerView;
     private EditText fieldCategoryTitle;
+    private EditText searchField;
     private Button buttonSave;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    private List<Category> items = new ArrayList<>();
+    private List<DataEntry> items = new ArrayList<>();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
@@ -108,10 +111,10 @@ public class CreateCategoryActivity extends AppCompatActivity {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise recycler view list">
-        categoryAdapter = new CategoryAdapter(this, items, storage);
+        dataEntryAdapter = new DataEntryAdapter(this, items, storage);
         recyclerView = findViewById(R.id.recyclerViewDataEntryList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(categoryAdapter);
+        recyclerView.setAdapter(dataEntryAdapter);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise title field">
@@ -126,7 +129,24 @@ public class CreateCategoryActivity extends AppCompatActivity {
         });
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Initialise search box">
+        searchField = findViewById(R.id.editTextSearchDataEntries);
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { RefreshList(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { RefreshList(); }
+            @Override
+            public void afterTextChanged(Editable editable) { RefreshList(); }
+        });
+        //</editor-fold>
+
         CheckSaveEligibility();
+        RefreshList();
+
+    }
+
+    public void RefreshList(){
 
     }
 
@@ -168,6 +188,10 @@ public class CreateCategoryActivity extends AppCompatActivity {
         }
 
         cmds.SaveAndStartActivity(this, storage, CategoryActivity.class);
+    }
+
+    public void AddDataEntry(View view){
+
     }
 
 }
