@@ -119,7 +119,7 @@ public class AuraManagementActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="View actions">
     public void AddAura(View view){
-
+        cmds.StartActivity(this, storage, CreateAuraActivity.class);
     }
     //</editor-fold>
 
