@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.profitcalcapp.Data.Aura;
+import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.Commands;
@@ -30,11 +34,22 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Activity Views">
-    private Spinner auraSpinner;
+    private Button buttonSave;
+    private EditText fieldAuraTitle;
+    private Spinner fieldAuraSpinner;
+    private EditText fieldStartWealth;
+    private EditText fieldFinishWealth;
+    private TextView displayProfit;
+    private EditText fieldHoursSpent;
+    private TextView displayProfitPerHour;
+    private EditText fieldKillCount;
+    private TextView displayKillsPerHour;
+    private EditText fieldExtraDetails;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private final Activity thisActivity = this;
+    private DataEntry editingDataEntry = null;
     //</editor-fold>
 
     @Override
@@ -56,6 +71,8 @@ public class CreateDataEntryActivity extends AppCompatActivity {
                             cmds.StartActivity(thisActivity, storage, CreateCategoryActivity.class);
                         }
                     });
+
+                    dialog.create().show();
                 }else{
                     cmds.StartActivity(this, storage, CreateCategoryActivity.class);
                 }
@@ -66,7 +83,37 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         return true;
     }
     private boolean UnsavedData(){
-        return false;
+
+        //title
+        String title = fieldAuraTitle.getText().toString().trim();
+
+        //aura
+        int spinnerPosition = fieldAuraSpinner.getSelectedItemPosition();
+
+        //start & finish wealth
+        String startValue = fieldStartWealth.getText().toString().trim();
+        String finishValue = fieldFinishWealth.getText().toString().trim();
+        int startWealth = startValue.equals("") ? 0 : Integer.parseInt(startValue);
+        int finishWealth = finishValue.equals("") ? 0 : Integer.parseInt(finishValue);
+
+        //hours spent
+        String hoursValue = fieldHoursSpent.getText().toString().trim();
+        double hoursSpent = hoursValue.equals("") ? 0.0 : Double.parseDouble(hoursValue);
+
+        //kill count
+        String killValue = fieldKillCount.getText().toString().trim();
+        int killCount = killValue.equals("") ? 0 : Integer.parseInt(killValue);
+
+        //additional details / text
+        String extraDetails = fieldExtraDetails.getText().toString().trim();
+
+        //check each result
+        return editingDataEntry == null ?
+                !title.equals("") || spinnerPosition > 0 || !startValue.equals("") ||
+                !finishValue.equals("") || !hoursValue.equals("") || !killValue.equals("") ||
+                !extraDetails.equals("")
+                ://OR
+                false;
     }
 
     @Override
@@ -88,9 +135,22 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         }
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Reference activity Views">
+        buttonSave = findViewById(R.id.buttonSaveDataEntry);
+        fieldAuraTitle = findViewById(R.id.editTextDataEntryTitle);
+        fieldStartWealth = findViewById(R.id.editTextStartWealthValue);
+        fieldFinishWealth = findViewById(R.id.editTextFinishWealthValue);
+        displayProfit = findViewById(R.id.textViewDisplayProfit);
+        fieldHoursSpent = findViewById(R.id.editTextHoursValue);
+        displayProfitPerHour = findViewById(R.id.textViewDisplayProfitPerHour);
+        fieldKillCount = findViewById(R.id.editTextKillValue);
+        displayKillsPerHour = findViewById(R.id.textViewDisplayKillsPerHour);
+        fieldExtraDetails = findViewById(R.id.editTextDataEntryDetails);
+        //</editor-fold>
+
         //<editor-fold defaultstate="collapsed" desc="Initialise spinner">
         //id / reference the view
-        auraSpinner = findViewById(R.id.spinnerAuraSelector);
+        fieldAuraSpinner = findViewById(R.id.spinnerAuraSelector);
         //create a list to hold the strings
         final List<String> stringList = new ArrayList<>();
         //add a default / initial value
@@ -103,7 +163,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         //set the drop down view layout
         arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         //set the adapter to the view spinner object
-        auraSpinner.setAdapter(arrayAdapter);
+        fieldAuraSpinner.setAdapter(arrayAdapter);
         //</editor-fold>
 
     }
