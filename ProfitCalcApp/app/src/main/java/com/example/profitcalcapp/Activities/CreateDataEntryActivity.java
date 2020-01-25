@@ -30,6 +30,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.profitcalcapp.Utilities.IntentKeys.DATA_ENTRY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.NEW_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
@@ -170,8 +171,11 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
         //<editor-fold defaultstate="collapsed" desc="Initialise categories">
         editingCategory = (Category) intent.getSerializableExtra(EDITING_CATEGORY_PASS_KEY);
-        if (editingCategory == null)
+        if (editingCategory == null) {
             newCategory = (Category) intent.getSerializableExtra(NEW_CATEGORY_PASS_KEY);
+            if (newCategory == null)
+                editingDataEntry = (DataEntry) intent.getSerializableExtra(DATA_ENTRY_PASS_KEY);
+        }
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Reference activity Views">
@@ -473,10 +477,10 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     public void SaveEntry(View view){
         String title = fieldEntryTitle.getText().toString().trim();
 
-        String startValue = fieldStartWealth.getText().toString().trim();
-        String finishValue = fieldFinishWealth.getText().toString().trim();
-        String hoursValue = fieldHoursSpent.getText().toString().trim();
-        String killValue = fieldKillCount.getText().toString().trim();
+        String startValue = fieldStartWealth.getText().toString().trim().replaceAll(",", "");
+        String finishValue = fieldFinishWealth.getText().toString().trim().replaceAll(",", "");
+        String hoursValue = fieldHoursSpent.getText().toString().trim().replaceAll(",", "");
+        String killValue = fieldKillCount.getText().toString().trim().replaceAll(",", "");
 
         BigDecimal startWealth = new BigDecimal(startValue.equals("") ? "0" : startValue);
         BigDecimal finishWealth = new BigDecimal(finishValue.equals("") ? "0" : finishValue);
