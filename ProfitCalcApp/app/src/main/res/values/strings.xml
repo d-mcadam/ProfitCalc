@@ -29,9 +29,13 @@
     <string name="create_data_name_hint">Summarise</string>
     <string name="create_data_aura_label">Aura:</string>
     <string name="create_data_start_label">Start Wealth:</string>
+    <string name="create_Data_start_hint">From Wealth Evaluator</string>
     <string name="create_data_finish_label">Finish Wealth:</string>
+    <string name="create_Data_finish_hint">From Wealth Evaluator</string>
     <string name="create_data_kills_label">Kill Count:</string>
+    <string name="create_data_kills_hint">ie. 1,234</string>
     <string name="create_data_hours_label">Hours Spent:</string>
+    <string name="create_data_hours_hint">ie. 1.75</string>
     <string name="create_data_extra_label">Extra details</string>
     <string name="create_data_extra_hint">Any extra details like inventory, special armour ect.</string>
 
