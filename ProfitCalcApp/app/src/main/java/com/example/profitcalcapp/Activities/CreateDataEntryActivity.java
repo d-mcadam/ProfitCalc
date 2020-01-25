@@ -232,6 +232,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         //</editor-fold>
 
         CheckSaveEligibility();
+        CalculateDisplayValues();
 
     }
 
@@ -256,7 +257,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         BigDecimal profit = finishWealth.subtract(startWealth);
         //add to string
         StringBuilder sb = new StringBuilder();
-        sb.append("Profit: ").append(profit);
+        sb.append("Profit: ").append(cmds.BigDecimalFormatter().format(profit));
         //display
         displayProfit.setText(sb.toString());
         //modify colour
@@ -268,7 +269,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         BigDecimal profitPerHour = profit.divide(hoursSpent, 2, RoundingMode.HALF_UP);
         //add to string
         sb = new StringBuilder();
-        sb.append("Profit: ").append(profitPerHour).append(" / hour");
+        sb.append("Profit: ").append(cmds.BigDecimalFormatter().format(profitPerHour)).append(" / hour");
         //display
         displayProfitPerHour.setText(sb.toString());
         //modify colour
@@ -280,7 +281,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         BigDecimal killsPerHour = killCount.divide(hoursSpent, 2, RoundingMode.HALF_UP);
         //add to string
         sb = new StringBuilder();
-        sb.append(killsPerHour).append(" / hour");
+        sb.append(cmds.BigDecimalFormatter().format(killsPerHour)).append(" / hour");
         //display
         displayKillsPerHour.setText(sb.toString());
     }

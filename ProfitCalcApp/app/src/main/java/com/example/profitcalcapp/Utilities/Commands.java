@@ -9,6 +9,7 @@ import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 
+import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
@@ -69,7 +70,7 @@ public class Commands {
     }
 
     /**
-     *
+     * Checks the specified data entry satisfies the search query
      * @param dataEntry The DataEntry being checked
      * @param query     The string search query
      * @return          True if the DataEntry matches the search query, false otherwise.
@@ -77,5 +78,11 @@ public class Commands {
     public boolean SatisfiesSearchQuery(DataEntry dataEntry, String query){
         return query.toLowerCase().trim().equals("");
     }
+
+    /**
+     * Custom formatter for BigDecimal values
+     * @return  a formatter used on BigDecimals to add commas
+     */
+    public DecimalFormat BigDecimalFormatter(){ return new DecimalFormat("###,###.##"); }
 
 }
