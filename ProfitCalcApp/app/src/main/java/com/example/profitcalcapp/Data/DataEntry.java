@@ -71,6 +71,8 @@ public class DataEntry implements Serializable {
             return new BooleanString("Cant have Finish Wealth less than 0");
         if (this.hoursSpent.compareTo(new BigDecimal("0")) <= 0)
             return new BooleanString("Cant have Hours Spent less than 0");
+        if (this.killCount.compareTo(new BigDecimal("0")) <= 0)
+            return new BooleanString("Cant have Kills less than 0");
 
         this.open = false;
         profit = finishWealth.subtract(startWealth);
