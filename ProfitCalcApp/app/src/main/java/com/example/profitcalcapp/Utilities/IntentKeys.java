@@ -14,7 +14,13 @@ public class IntentKeys {
     //for passing string values
     public static final String STRING_PASS_KEY = "STRING_PASS_KEY";
 
-    //for passing collection list from create category to create entry activity
-    public static final String COLLECTION_PASS_KEY = "COLLECTION_PASS_KEY";
+    //for passing category from category activity to create category activity for editing an activity
+    public static final String EDITING_CATEGORY_PASS_KEY = "EDITING_CATEGORY_PASS_KEY";
+
+    //for passing category from create category to create entry activity for creating a new entry
+    public static final String NEW_CATEGORY_PASS_KEY = "NEW_CATEGORY_PASS_KEY";
+
+    //for passing data entry from create category to create entry activity for editing an existing entry
+    public static final String DATA_ENTRY_PASS_KEY = "DATA_ENTRY_PASS_KEY";
 
 }
