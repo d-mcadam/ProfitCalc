@@ -56,11 +56,23 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    private final Activity thisActivity = this;
     private Category editingCategory = null;
     private Category newCategory = null;
     private DataEntry editingDataEntry = null;
     //</editor-fold>
+
+    private void RestartCreateCategoryActivity(){
+        Intent wnd = new Intent(this, CreateCategoryActivity.class);
+        wnd.putExtra(STORAGE_CLASS_DATA, storage);
+
+        if (editingCategory == null)
+            wnd.putExtra(NEW_CATEGORY_PASS_KEY, newCategory);
+        else
+            wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
+
+        startActivity(wnd);
+        finish();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,24 +90,13 @@ public class CreateDataEntryActivity extends AppCompatActivity {
                     dialog.setPositiveButton("Discard Changes", new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            cmds.StartActivity(thisActivity, storage, CreateCategoryActivity.class);
+                            RestartCreateCategoryActivity();
                         }
                     });
 
                     dialog.create().show();
                 }else{
-//                    cmds.StartActivity(this, storage, CreateCategoryActivity.class);
-
-                        Intent wnd = new Intent(this, CreateCategoryActivity.class);
-                        wnd.putExtra(STORAGE_CLASS_DATA, storage);
-
-                        if (editingCategory == null)
-                            wnd.putExtra(NEW_CATEGORY_PASS_KEY, newCategory);
-                        else
-                            wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
-
-                        startActivity(wnd);
-                        finish();
+                    RestartCreateCategoryActivity();
                 }
                 break;
             default:
@@ -130,12 +131,21 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
         //check each result
         return editingDataEntry == null ?
-                !title.equals("") || !auraText.equals(getResources().getString(R.string.text_none)) ||
-                startWealth.compareTo(new BigDecimal("0")) > 0 || finishWealth.compareTo(new BigDecimal("0")) > 0 ||
-                hoursSpent.compareTo(new BigDecimal("0")) > 0 || killCount.compareTo(new BigDecimal("0")) > 0 ||
+                !title.equals("") ||
+                !auraText.equals(getResources().getString(R.string.text_none)) ||
+                startWealth.compareTo(new BigDecimal("0")) > 0 ||
+                finishWealth.compareTo(new BigDecimal("0")) > 0 ||
+                hoursSpent.compareTo(new BigDecimal("0")) > 0 ||
+                killCount.compareTo(new BigDecimal("0")) > 0 ||
                 !extraDetails.equals("")
                ://OR
-                false;
+                !title.equals(editingDataEntry.getTitle()) ||
+                !auraText.equals(editingDataEntry.getAura().getTitle()) ||
+                startWealth.compareTo(editingDataEntry.getStartWealth()) != 0 ||
+                finishWealth.compareTo(editingDataEntry.getFinishWealth()) != 0 ||
+                hoursSpent.compareTo(editingDataEntry.getHoursSpent()) != 0 ||
+                killCount.compareTo(editingDataEntry.getKillCount()) != 0 ||
+                !extraDetails.equals(editingDataEntry.getExtraDetails());
     }
 
     @Override
