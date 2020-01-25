@@ -22,15 +22,14 @@ import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.BooleanString;
-import com.example.profitcalcapp.Utilities.CategoryAdapter;
 import com.example.profitcalcapp.Utilities.Commands;
 import com.example.profitcalcapp.Utilities.DataEntryAdapter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.profitcalcapp.Utilities.IntentKeys.COLLECTION_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.NEW_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class CreateCategoryActivity extends AppCompatActivity {
@@ -49,12 +48,10 @@ public class CreateCategoryActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    private List<DataEntry> items = new ArrayList<>();
-    private ArrayList<DataEntry> collection = new ArrayList<>();
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Variables">
     private final Activity thisActivity = this;
+    private List<DataEntry> items = new ArrayList<>();
+    private Category tempCategory = null;
+    private Category editingCategory = null;
     //</editor-fold>
 
     @Override
@@ -113,13 +110,6 @@ public class CreateCategoryActivity extends AppCompatActivity {
         buttonSave = findViewById(R.id.buttonSaveCategory);
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Initialise recycler view list">
-        dataEntryAdapter = new DataEntryAdapter(this, items, storage);
-        recyclerView = findViewById(R.id.recyclerViewDataEntryList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(dataEntryAdapter);
-        //</editor-fold>
-
         //<editor-fold defaultstate="collapsed" desc="Initialise title field">
         fieldCategoryTitle = findViewById(R.id.editTextCategoryTitle);
         fieldCategoryTitle.addTextChangedListener(new TextWatcher() {
@@ -130,6 +120,27 @@ public class CreateCategoryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) { CheckSaveEligibility(); }
         });
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise categories">
+        editingCategory = (Category) intent.getSerializableExtra(EDITING_CATEGORY_PASS_KEY);
+        if (editingCategory == null) {
+            tempCategory = (Category) intent.getSerializableExtra(NEW_CATEGORY_PASS_KEY);
+            if (tempCategory == null) {
+                tempCategory = new Category();
+            }else{
+                fieldCategoryTitle.setText(tempCategory.getTitle());
+            }
+        }else{
+            fieldCategoryTitle.setText(editingCategory.getTitle());
+        }
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise recycler view list">
+        dataEntryAdapter = new DataEntryAdapter(this, items, storage);
+        recyclerView = findViewById(R.id.recyclerViewDataEntryList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(dataEntryAdapter);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise search box">
@@ -151,7 +162,7 @@ public class CreateCategoryActivity extends AppCompatActivity {
 
     public void RefreshList(){
         items.clear();
-        for (DataEntry dataEntry : collection)
+        for (DataEntry dataEntry : editingCategory == null ? tempCategory.getEntries() : editingCategory.getEntries())
             if (cmds.SatisfiesSearchQuery(dataEntry, searchField.getText().toString()))
                 items.add(dataEntry);
 
@@ -188,21 +199,39 @@ public class CreateCategoryActivity extends AppCompatActivity {
     public void SaveCategory(View view){
         String title = fieldCategoryTitle.getText().toString().trim();
 
-        Category category = new Category(title);
-        BooleanString r = storage.addCategory(category);
+        if (editingCategory == null) {
+            Category category = new Category(title);
+            for (DataEntry dataEntry : tempCategory.getEntries())
+                category.addEntry(dataEntry);
 
-        if (!r.result){
-            Toast.makeText(getApplicationContext(), r.msg, Toast.LENGTH_LONG).show();
-            return;
+            BooleanString r = storage.addCategory(category);
+
+            if (!r.result) {
+                Toast.makeText(getApplicationContext(), r.msg, Toast.LENGTH_LONG).show();
+                return;
+            }
+        }else{
+            editingCategory.setTitle(title);
+            //all entries should already be updated on the object
         }
 
         cmds.SaveAndStartActivity(this, storage, CategoryActivity.class);
     }
 
     public void AddDataEntry(View view){
+        String title = fieldCategoryTitle.getText().toString().trim();
+
         Intent wnd = new Intent(this, CreateDataEntryActivity.class);
         wnd.putExtra(STORAGE_CLASS_DATA, storage);
-        wnd.putExtra(COLLECTION_PASS_KEY, collection);
+
+        if (editingCategory == null) {
+            tempCategory.setTitle(title);
+            wnd.putExtra(NEW_CATEGORY_PASS_KEY, tempCategory);
+        }else {
+            editingCategory.setTitle(title);
+            wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
+        }
+
         startActivity(wnd);
         finish();
     }

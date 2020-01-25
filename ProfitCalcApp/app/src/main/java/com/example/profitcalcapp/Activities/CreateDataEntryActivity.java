@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.profitcalcapp.Data.Aura;
+import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
@@ -27,7 +28,8 @@ import com.example.profitcalcapp.Utilities.Commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.profitcalcapp.Utilities.IntentKeys.COLLECTION_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.NEW_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class CreateDataEntryActivity extends AppCompatActivity {
@@ -53,8 +55,8 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private final Activity thisActivity = this;
-    private DataEntry editingDataEntry = null;
-    private ArrayList<DataEntry> collections;
+    private Category editingCategory = null;
+    private Category newCategory = null;
     //</editor-fold>
 
     @Override
@@ -79,7 +81,18 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
                     dialog.create().show();
                 }else{
-                    cmds.StartActivity(this, storage, CreateCategoryActivity.class);
+//                    cmds.StartActivity(this, storage, CreateCategoryActivity.class);
+
+                        Intent wnd = new Intent(this, CreateCategoryActivity.class);
+                        wnd.putExtra(STORAGE_CLASS_DATA, storage);
+
+                        if (editingCategory == null)
+                            wnd.putExtra(NEW_CATEGORY_PASS_KEY, newCategory);
+                        else
+                            wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
+
+                        startActivity(wnd);
+                        finish();
                 }
                 break;
             default:
@@ -113,12 +126,13 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         String extraDetails = fieldExtraDetails.getText().toString().trim();
 
         //check each result
-        return editingDataEntry == null ?
-                !title.equals("") || spinnerPosition > 0 || !startValue.equals("") ||
-                !finishValue.equals("") || !hoursValue.equals("") || !killValue.equals("") ||
-                !extraDetails.equals("")
-                ://OR
-                false;
+        return false;
+//        editingDataEntry == null ?
+//                !title.equals("") || spinnerPosition > 0 || !startValue.equals("") ||
+//                !finishValue.equals("") || !hoursValue.equals("") || !killValue.equals("") ||
+//                !extraDetails.equals("")
+//                ://OR
+//                false;
     }
 
     @Override
@@ -140,12 +154,10 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         }
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Get collection from Intent">
-        collections = (ArrayList<DataEntry>) intent.getSerializableExtra(COLLECTION_PASS_KEY);
-        if (collections == null){
-            System.out.println("collections found null");
-            collections = new ArrayList<>();
-        }
+        //<editor-fold defaultstate="collapsed" desc="Initialise categories">
+        editingCategory = (Category) intent.getSerializableExtra(EDITING_CATEGORY_PASS_KEY);
+        if (editingCategory == null)
+            newCategory = (Category) intent.getSerializableExtra(NEW_CATEGORY_PASS_KEY);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Reference activity Views">
@@ -190,11 +202,13 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         });
         //</editor-fold>
 
+        CheckSaveEligibility();
+
     }
 
     private boolean DuplicateTitle(){
 
-        for (DataEntry dataEntry : collections){
+        for (DataEntry dataEntry : editingCategory == null ? newCategory.getEntries() : editingCategory.getEntries()){
             if (dataEntry.getTitle().toLowerCase().equals(fieldEntryTitle.getText().toString().toLowerCase().trim())){
                 fieldEntryTitle.setError("Entry name already exists");
                 return true;
@@ -219,6 +233,21 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     }
 
     public void SaveEntry(View view){
+        String title = fieldEntryTitle.getText().toString().trim();
+        DataEntry dataEntry = new DataEntry(title);
+
+        Intent wnd = new Intent(this, CreateCategoryActivity.class);
+        wnd.putExtra(STORAGE_CLASS_DATA, storage);
+        if (editingCategory == null) {
+            newCategory.addEntry(dataEntry);
+            wnd.putExtra(NEW_CATEGORY_PASS_KEY, newCategory);
+        }else {
+            editingCategory.addEntry(dataEntry);
+            wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
+        }
+
+        startActivity(wnd);
+        finish();
 
     }
 
