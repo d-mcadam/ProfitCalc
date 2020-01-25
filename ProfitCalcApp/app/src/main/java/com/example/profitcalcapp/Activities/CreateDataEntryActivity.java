@@ -59,6 +59,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     private final Activity thisActivity = this;
     private Category editingCategory = null;
     private Category newCategory = null;
+    private DataEntry editingDataEntry = null;
     //</editor-fold>
 
     @Override
@@ -102,7 +103,39 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         }
         return true;
     }
-    private boolean UnsavedData(){return false;
+    private boolean UnsavedData(){
+
+        //title
+        String title = fieldEntryTitle.getText().toString().trim();
+
+        //aura
+        String auraText = fieldAuraSpinner.getSelectedItem().toString();
+
+        //start & finish wealth
+        String startValue = fieldStartWealth.getText().toString().trim();
+        String finishValue = fieldFinishWealth.getText().toString().trim();
+        BigDecimal startWealth = startValue.equals("") ? new BigDecimal("0") : new BigDecimal(startValue);
+        BigDecimal finishWealth = finishValue.equals("") ? new BigDecimal("0") : new BigDecimal(finishValue);
+
+        //hours spent
+        String hoursValue = fieldHoursSpent.getText().toString().trim();
+        BigDecimal hoursSpent = hoursValue.equals("") ? new BigDecimal("0") : new BigDecimal(hoursValue);
+
+        //kill count
+        String killValue = fieldKillCount.getText().toString().trim();
+        BigDecimal killCount = killValue.equals("") ? new BigDecimal("0") : new BigDecimal(killValue);
+
+        //additional details / text
+        String extraDetails = fieldExtraDetails.getText().toString().trim();
+
+        //check each result
+        return editingDataEntry == null ?
+                !title.equals("") || !auraText.equals(getResources().getString(R.string.text_none)) ||
+                startWealth.compareTo(new BigDecimal("0")) > 0 || finishWealth.compareTo(new BigDecimal("0")) > 0 ||
+                hoursSpent.compareTo(new BigDecimal("0")) > 0 || killCount.compareTo(new BigDecimal("0")) > 0 ||
+                !extraDetails.equals("")
+               ://OR
+                false;
     }
 
     @Override
