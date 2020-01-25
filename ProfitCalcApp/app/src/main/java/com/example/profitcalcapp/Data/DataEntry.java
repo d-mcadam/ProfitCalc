@@ -56,7 +56,9 @@ public class DataEntry implements Serializable {
     public BigDecimal getKillCount(){ return this.killCount; }
     public String getExtraDetails(){ return this.extraDetails; }
 
-    public BigDecimal getProfit(){ return this.profit; }
+    public BigDecimal getProfit(){
+        return this.open ? this.finishWealth.subtract(this.startWealth) : this.profit;
+    }
     public BigDecimal getProfitPerHour(){ return this.profitPerHour; }
     public BigDecimal getKillsPerHour(){ return this.killsPerHour; }
     public BigDecimal getProfitPerKill(){ return this.profitPerKill; }
