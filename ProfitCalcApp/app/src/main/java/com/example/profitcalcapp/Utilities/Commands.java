@@ -9,7 +9,9 @@ import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
@@ -56,7 +58,7 @@ public class Commands {
      */
     public boolean SatisfiesSearchQuery(Aura aura, String query){
         return query.toLowerCase().trim().equals("") ||
-                aura.getTitle().toLowerCase().trim().contains(query.toLowerCase());
+                aura.getTitle().toLowerCase().trim().contains(query.toLowerCase().trim());
     }
 
     /**
@@ -66,7 +68,12 @@ public class Commands {
      * @return          True if the Category matches the search query, false otherwise.
      */
     public boolean SatisfiesSearchQuery(Category category, String query){
-        return query.toLowerCase().trim().equals("");
+        boolean queryContainsLetters = query.matches(".*[a-zA-Z].*");
+        return query.toLowerCase().trim().equals("") ||
+                category.getTitle().toLowerCase().trim().contains(query.toLowerCase().trim()) ||
+                category.getEntries().stream().anyMatch(item ->
+                        item.getTitle().toLowerCase().trim().contains(query.toLowerCase().trim())) ||
+                Objects.equals(category.getEntryCount(), queryContainsLetters ? null : Integer.parseInt(query));
     }
 
     /**
@@ -76,7 +83,19 @@ public class Commands {
      * @return          True if the DataEntry matches the search query, false otherwise.
      */
     public boolean SatisfiesSearchQuery(DataEntry dataEntry, String query){
-        return query.toLowerCase().trim().equals("");
+        boolean queryContainsLetters = query.matches(".*[a-zA-Z].*");
+        return query.toLowerCase().trim().equals("") ||
+                dataEntry.getTitle().toLowerCase().trim().contains(query.toLowerCase().trim()) ||
+                dataEntry.getAura().getTitle().toLowerCase().trim().contains(query.toLowerCase().trim()) ||
+                dataEntry.getExtraDetails().toLowerCase().trim().contains(query.toLowerCase().trim()) ||
+                Objects.equals(dataEntry.getStartWealth(), queryContainsLetters ? null : new BigDecimal(query)) ||
+                Objects.equals(dataEntry.getFinishWealth(), queryContainsLetters ? null : new BigDecimal(query)) ||
+                Objects.equals(dataEntry.getHoursSpent(), queryContainsLetters ? null : new BigDecimal(query)) ||
+                Objects.equals(dataEntry.getKillCount(), queryContainsLetters ? null : new BigDecimal(query)) ||
+                Objects.equals(dataEntry.getProfit(), queryContainsLetters ? null : new BigDecimal(query)) ||
+                Objects.equals(dataEntry.getProfitPerHour(), queryContainsLetters ? null : new BigDecimal(query)) ||
+                Objects.equals(dataEntry.getKillsPerHour(), queryContainsLetters ? null : new BigDecimal(query)) ||
+                Objects.equals(dataEntry.getProfitPerKill(), queryContainsLetters ? null : new BigDecimal(query));
     }
 
     /**
