@@ -25,6 +25,8 @@ import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.Commands;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,12 +164,8 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
         //<editor-fold defaultstate="collapsed" desc="Reference activity Views">
         buttonSave = findViewById(R.id.buttonSaveDataEntry);
-        fieldStartWealth = findViewById(R.id.editTextStartWealthValue);
-        fieldFinishWealth = findViewById(R.id.editTextFinishWealthValue);
         displayProfit = findViewById(R.id.textViewDisplayProfit);
-        fieldHoursSpent = findViewById(R.id.editTextHoursValue);
         displayProfitPerHour = findViewById(R.id.textViewDisplayProfitPerHour);
-        fieldKillCount = findViewById(R.id.editTextKillValue);
         displayKillsPerHour = findViewById(R.id.textViewDisplayKillsPerHour);
         fieldExtraDetails = findViewById(R.id.editTextDataEntryDetails);
         //</editor-fold>
@@ -202,8 +200,89 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         });
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Initialise generic text watcher for start and finish wealth value fields">
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void afterTextChanged(Editable editable) { CalculateDisplayValues(); }
+        };
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise start wealth">
+        fieldStartWealth = findViewById(R.id.editTextStartWealthValue);
+        fieldStartWealth.addTextChangedListener(textWatcher);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise finish wealth">
+        fieldFinishWealth = findViewById(R.id.editTextFinishWealthValue);
+        fieldFinishWealth.addTextChangedListener(textWatcher);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise hours spent">
+        fieldHoursSpent = findViewById(R.id.editTextHoursValue);
+        fieldHoursSpent.addTextChangedListener(textWatcher);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Initialise kill count">
+        fieldKillCount = findViewById(R.id.editTextKillValue);
+        fieldKillCount.addTextChangedListener(textWatcher);
+        //</editor-fold>
+
         CheckSaveEligibility();
 
+    }
+
+    private void CalculateDisplayValues(){
+        //start & finish wealth
+        String startValue = fieldStartWealth.getText().toString().trim();
+        String finishValue = fieldFinishWealth.getText().toString().trim();
+        BigDecimal startWealth = startValue.equals("") ? new BigDecimal("0") : new BigDecimal(startValue);
+        BigDecimal finishWealth = finishValue.equals("") ? new BigDecimal("0") : new BigDecimal(finishValue);
+
+        //hours spent
+        String hoursValue = fieldHoursSpent.getText().toString().trim();
+        BigDecimal hoursSpent = hoursValue.equals("") ? new BigDecimal("1") : new BigDecimal(hoursValue).compareTo(new BigDecimal("0")) == 0 ? new BigDecimal("1") : new BigDecimal(hoursValue);
+
+
+        //kill count
+        String killValue = fieldKillCount.getText().toString().trim();
+        BigDecimal killCount = killValue.equals("") ? new BigDecimal("0") : new BigDecimal(killValue);
+
+        //total profit
+        //calc
+        BigDecimal profit = finishWealth.subtract(startWealth);
+        //add to string
+        StringBuilder sb = new StringBuilder();
+        sb.append("Profit: ").append(profit);
+        //display
+        displayProfit.setText(sb.toString());
+        //modify colour
+        displayProfit.setTextColor(profit.compareTo(new BigDecimal("0")) < 0 ?
+                getResources().getColor(R.color.pureRed, null) : getResources().getColor(R.color.pureBlack, null));
+
+        //profit / hour
+        //calc
+        BigDecimal profitPerHour = profit.divide(hoursSpent, 2, RoundingMode.HALF_UP);
+        //add to string
+        sb = new StringBuilder();
+        sb.append("Profit: ").append(profitPerHour).append(" / hour");
+        //display
+        displayProfitPerHour.setText(sb.toString());
+        //modify colour
+        displayProfitPerHour.setTextColor(profitPerHour.compareTo(new BigDecimal("0")) < 0 ?
+                getResources().getColor(R.color.pureRed, null) : getResources().getColor(R.color.pureBlack, null));
+
+        //kills / hour
+        //calc
+        BigDecimal killsPerHour = killCount.divide(hoursSpent, 2, RoundingMode.HALF_UP);
+        //add to string
+        sb = new StringBuilder();
+        sb.append(killsPerHour).append(" / hour");
+        //display
+        displayKillsPerHour.setText(sb.toString());
     }
 
     private boolean DuplicateTitle(){
