@@ -325,10 +325,17 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
     public void SaveEntry(View view){
         String title = fieldEntryTitle.getText().toString().trim();
-        BigDecimal startWealth = new BigDecimal(fieldStartWealth.getText().toString().trim());
-        BigDecimal finishWealth = new BigDecimal(fieldFinishWealth.getText().toString().trim());
-        BigDecimal hoursSpent = new BigDecimal(fieldHoursSpent.getText().toString().trim());
-        BigDecimal killCount = new BigDecimal(fieldKillCount.getText().toString().trim());
+
+        String startValue = fieldStartWealth.getText().toString().trim();
+        String finishValue = fieldFinishWealth.getText().toString().trim();
+        String hoursValue = fieldHoursSpent.getText().toString().trim();
+        String killValue = fieldKillCount.getText().toString().trim();
+
+        BigDecimal startWealth = new BigDecimal(startValue.equals("") ? "0" : startValue);
+        BigDecimal finishWealth = new BigDecimal(finishValue.equals("") ? "0" : finishValue);
+        BigDecimal hoursSpent = new BigDecimal(hoursValue.equals("") ? "0" : hoursValue);
+        BigDecimal killCount = new BigDecimal(killValue.equals("") ? "0" : killValue);
+
         String extraDetails = fieldExtraDetails.getText().toString().trim();
 
         Aura aura = new Aura("Not an aura");
