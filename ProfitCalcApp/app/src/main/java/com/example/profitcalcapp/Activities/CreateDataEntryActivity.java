@@ -52,6 +52,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     private TextView displayProfitPerHour;
     private EditText fieldKillCount;
     private TextView displayKillsPerHour;
+    private TextView displayProfitPerKill;
     private EditText fieldExtraDetails;
     //</editor-fold>
 
@@ -178,6 +179,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         displayProfit = findViewById(R.id.textViewDisplayProfit);
         displayProfitPerHour = findViewById(R.id.textViewDisplayProfitPerHour);
         displayKillsPerHour = findViewById(R.id.textViewDisplayKillsPerHour);
+        displayProfitPerKill = findViewById(R.id.textViewDisplayProfitPerKill);
         fieldExtraDetails = findViewById(R.id.editTextDataEntryDetails);
         //</editor-fold>
 
@@ -259,10 +261,10 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         String hoursValue = fieldHoursSpent.getText().toString().trim();
         BigDecimal hoursSpent = hoursValue.equals("") ? new BigDecimal("1") : new BigDecimal(hoursValue).compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : new BigDecimal(hoursValue);
 
-
         //kill count
         String killValue = fieldKillCount.getText().toString().trim();
-        BigDecimal killCount = killValue.equals("") ? new BigDecimal("0") : new BigDecimal(killValue);
+        BigDecimal killCount = killValue.equals("") ? new BigDecimal("1") : new BigDecimal(killValue).compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : new BigDecimal(killValue);
+
 
         //total profit
         //calc
@@ -296,6 +298,18 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         sb.append(cmds.BigDecimalFormatter().format(killsPerHour)).append(" / hour");
         //display
         displayKillsPerHour.setText(sb.toString());
+
+        //profit / kill
+        //calc
+        BigDecimal profitPerKill = profit.divide(killCount, 2, RoundingMode.HALF_UP);
+        //add to string
+        sb = new StringBuilder();
+        sb.append(cmds.BigDecimalFormatter().format(profitPerKill)).append(" / kill");
+        //display
+        displayProfitPerKill.setText(sb.toString());
+        //modify colour
+        displayProfitPerKill.setTextColor(profitPerKill.compareTo(new BigDecimal("0")) < 0 ?
+                getResources().getColor(R.color.pureRed, null) : getResources().getColor(R.color.pureBlack, null));
     }
 
     private boolean DuplicateTitle(){
