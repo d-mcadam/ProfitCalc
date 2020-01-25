@@ -80,7 +80,7 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //DATA_ENTRY_PASS_KEY
             }
         });
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {

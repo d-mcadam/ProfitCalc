@@ -1,6 +1,7 @@
 package com.example.profitcalcapp.Utilities;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final int selectedColour = context.getResources().getColor(R.color.selectedGrey, null);
         final Category item = items.get(position);
         ((Item)holder).title.setText(item.getTitle());
+        ((Item) holder).brief.setText(String.valueOf(item.getEntryCount()));
 
         if (focusedPosition == position){
             if (((ColorDrawable)holder.itemView.getBackground()).getColor() != selectedColour){
@@ -97,7 +99,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //EDITING_CATEGORY_PASS_KEY
             }
         });
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
