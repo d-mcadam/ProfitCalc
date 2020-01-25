@@ -9,4 +9,7 @@
 
     <color name="originalWhite">#ffffff</color>
     <color name="selectedGrey">#cccccc</color>
+
+    <color name="pureRed">#aa0000</color>
+    <color name="pureBlack">#000000</color>
 </resources>
