@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textColor="#000000"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/rowButtonEditDataEntry"
+        app:layout_constraintEnd_toStartOf="@+id/rowButtonViewDataEntry"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,4 +36,25 @@
         app:layout_constraintEnd_toStartOf="@+id/rowButtonDeleteDataEntry"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageButton
+        android:id="@+id/rowButtonViewDataEntry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#000000"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/rowButtonEditDataEntry"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_view" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowTitleDataEntry" />
 </androidx.constraintlayout.widget.ConstraintLayout>
