@@ -63,6 +63,12 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         final DataEntry item = items.get(position);
         ((Item)holder).title.setText(item.getTitle());
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("Profits: ").append(item.getProfit()).
+                append("\nKills: ").append(item.getKillCount()).
+                append("\nHours: ").append(item.getHoursSpent());
+        ((Item) holder).brief.setText(sb.toString());
+
         if (focusedPosition == position){
             if (((ColorDrawable)holder.itemView.getBackground()).getColor() != selectedColour){
                 holder.itemView.getLayoutParams().height = defaultHeight / expandedDivision;
@@ -91,7 +97,7 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((Item) holder).view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //DATA_ENTRY_PASS_KEY
+
             }
         });
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +119,7 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class Item extends RecyclerView.ViewHolder{
         TextView title;
+        TextView brief;
         ImageButton view;
         ImageButton edit;
         ImageButton delete;
@@ -120,6 +127,7 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public Item(View itemView){
             super(itemView);
             title = itemView.findViewById(R.id.rowTitleDataEntry);
+            brief = itemView.findViewById(R.id.rowBriefDataEntry);
             view = itemView.findViewById(R.id.rowButtonViewDataEntry);
             edit = itemView.findViewById(R.id.rowButtonEditDataEntry);
             delete = itemView.findViewById(R.id.rowButtonDeleteDataEntry);
