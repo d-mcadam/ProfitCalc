@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static com.example.profitcalcapp.Utilities.IntentKeys.DATA_ENTRY_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.NEW_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -50,7 +52,6 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        System.out.println(parent.getMeasuredHeight());
         View row = LayoutInflater.from(context).inflate(R.layout.custom_row_data_entry, parent, false);
         row.getLayoutParams().height = defaultHeight / defaultDivision;
         return new Item(row);
@@ -121,6 +122,12 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void onClick(View view) {
                 Intent wnd = new Intent(context, CreateDataEntryActivity.class);
+
+                if (((CreateCategoryActivity)context).editingCategory == null)
+                    wnd.putExtra(NEW_CATEGORY_PASS_KEY, ((CreateCategoryActivity)context).tempCategory);
+                else
+                    wnd.putExtra(EDITING_CATEGORY_PASS_KEY, ((CreateCategoryActivity)context).editingCategory);
+
                 wnd.putExtra(DATA_ENTRY_PASS_KEY, items.get(position));
                 wnd.putExtra(STORAGE_CLASS_DATA, storage);
                 context.startActivity(wnd);
