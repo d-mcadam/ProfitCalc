@@ -27,6 +27,7 @@ public class DataEntry implements Serializable {
     //<editor-fold defaultstate="collapsed" desc="Change Once">
     private BigDecimal profit = new BigDecimal("0");
     private BigDecimal profitPerHour = new BigDecimal("0");
+    private BigDecimal killsPerHour = new BigDecimal("0");
     private BigDecimal profitPerKill = new BigDecimal("0");
     //</editor-fold>
 
@@ -57,6 +58,7 @@ public class DataEntry implements Serializable {
 
     public BigDecimal getProfit(){ return this.profit; }
     public BigDecimal getProfitPerHour(){ return this.profitPerHour; }
+    public BigDecimal getKillsPerHour(){ return this.killsPerHour; }
     public BigDecimal getProfitPerKill(){ return this.profitPerKill; }
     //</editor-fold>
 
@@ -74,6 +76,7 @@ public class DataEntry implements Serializable {
         profit = finishWealth.subtract(startWealth);
         //Check for Zero values before dividing
         profitPerHour = profit.divide(hoursSpent.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : hoursSpent, 2, RoundingMode.HALF_UP);
+        killsPerHour = killCount.divide(hoursSpent.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : hoursSpent, 2, RoundingMode.HALF_UP);
         profitPerKill = profit.divide(killCount.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : killCount, 2, RoundingMode.HALF_UP);
         return new BooleanString();
     }
