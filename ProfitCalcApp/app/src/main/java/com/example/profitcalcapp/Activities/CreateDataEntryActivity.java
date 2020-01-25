@@ -173,9 +173,8 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         editingCategory = (Category) intent.getSerializableExtra(EDITING_CATEGORY_PASS_KEY);
         if (editingCategory == null) {
             newCategory = (Category) intent.getSerializableExtra(NEW_CATEGORY_PASS_KEY);
-            if (newCategory == null)
-                editingDataEntry = (DataEntry) intent.getSerializableExtra(DATA_ENTRY_PASS_KEY);
         }
+        editingDataEntry = (DataEntry) intent.getSerializableExtra(DATA_ENTRY_PASS_KEY);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Reference activity Views">
@@ -381,6 +380,15 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         });
         //</editor-fold>
 
+        if (editingDataEntry != null){
+            fieldEntryTitle.setText(editingDataEntry.getTitle());
+            fieldStartWealth.setText(String.valueOf(editingDataEntry.getStartWealth()));
+            fieldFinishWealth.setText(String.valueOf(editingDataEntry.getFinishWealth()));
+            fieldHoursSpent.setText(String.valueOf(editingDataEntry.getHoursSpent()));
+            fieldKillCount.setText(String.valueOf(editingDataEntry.getKillCount()));
+            fieldExtraDetails.setText(editingDataEntry.getExtraDetails());
+        }
+
         CheckSaveEligibility();
         CalculateDisplayValues();
 
@@ -451,6 +459,9 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     private boolean DuplicateTitle(){
 
         for (DataEntry dataEntry : editingCategory == null ? newCategory.getEntries() : editingCategory.getEntries()){
+            if (editingDataEntry != null && dataEntry.getTitle().equals(editingDataEntry.getTitle()))
+                continue;
+
             if (dataEntry.getTitle().toLowerCase().equals(fieldEntryTitle.getText().toString().toLowerCase().trim())){
                 fieldEntryTitle.setError("Entry name already exists");
                 return true;
@@ -496,17 +507,43 @@ public class CreateDataEntryActivity extends AppCompatActivity {
                 break;
             }
 
-        DataEntry dataEntry = new DataEntry(title, startWealth, finishWealth, aura, hoursSpent, killCount, extraDetails);
-
-//will need to check for data entry editing variable to be null here
+        DataEntry newEntry = new DataEntry(title, startWealth, finishWealth, aura, hoursSpent, killCount, extraDetails);
 
         Intent wnd = new Intent(this, CreateCategoryActivity.class);
         wnd.putExtra(STORAGE_CLASS_DATA, storage);
         if (editingCategory == null) {
-            newCategory.addEntry(dataEntry);
+            if (editingDataEntry == null) {
+                newCategory.addEntry(newEntry);
+            }else{
+                for (DataEntry dataEntry : newCategory.getEntries())
+                    if (dataEntry.getTitle().equals(editingDataEntry.getTitle())){
+                        dataEntry.setTitle(title);
+                        dataEntry.setAura(aura);
+                        dataEntry.setStartWealth(startWealth);
+                        dataEntry.setFinishWealth(finishWealth);
+                        dataEntry.setHoursSpent(hoursSpent);
+                        dataEntry.setKillCount(killCount);
+                        dataEntry.setExtraDetails(extraDetails);
+                        break;
+                    }
+            }
             wnd.putExtra(NEW_CATEGORY_PASS_KEY, newCategory);
         }else {
-            editingCategory.addEntry(dataEntry);
+            if (editingDataEntry == null) {
+                editingCategory.addEntry(newEntry);
+            }else{
+                for (DataEntry dataEntry : editingCategory.getEntries())
+                    if (dataEntry.getTitle().equals(editingDataEntry.getTitle())){
+                        dataEntry.setTitle(title);
+                        dataEntry.setAura(aura);
+                        dataEntry.setStartWealth(startWealth);
+                        dataEntry.setFinishWealth(finishWealth);
+                        dataEntry.setHoursSpent(hoursSpent);
+                        dataEntry.setKillCount(killCount);
+                        dataEntry.setExtraDetails(extraDetails);
+                        break;
+                    }
+            }
             wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
         }
 
