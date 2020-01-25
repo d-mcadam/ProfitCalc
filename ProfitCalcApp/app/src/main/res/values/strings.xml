@@ -6,6 +6,9 @@
     <string name="text_save">Save</string>
     <string name="text_update">Update</string>
     <string name="text_placeholder_xxxx">XXXX</string>
+    <string name="text_placeholder_12x">Profit: XXX, XXX, XXX, XXX</string>
+    <string name="text_placeholder_12xph">Profit: XXX, XXX, XXX, XXX.XX / hour</string>
+    <string name="text_placeholder_6xph">XXX, XXX / hour</string>
 
     //Main activity
     <string name="main_categories_button">Categories</string>
@@ -26,7 +29,7 @@
     <string name="create_data_name_hint">Summarise</string>
     <string name="create_data_aura_label">Aura:</string>
     <string name="create_data_start_label">Start Wealth:</string>
-    <string name="create_data_finish_label">Finish Wealth</string>
+    <string name="create_data_finish_label">Finish Wealth:</string>
     <string name="create_data_kills_label">Kill Count:</string>
     <string name="create_data_hours_label">Hours Spent:</string>
     <string name="create_data_extra_label">Extra details</string>
