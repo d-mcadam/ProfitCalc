@@ -2,6 +2,9 @@ package com.example.profitcalcapp.Utilities;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +18,20 @@ import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final Storage storage;
+    private final Commands cmds = new Commands();
 
     private Context context;
     private List<DataEntry> items;
 
     private final int defaultHeight = 1245;
     private final int defaultDivision = 11;
-    private final int expandedDivision = 8;
+    private final int expandedDivision = 4;
 
     public int focusedPosition = -1;
 
@@ -64,10 +69,16 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((Item)holder).title.setText(item.getTitle());
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Profits: ").append(item.getProfit()).
-                append("\nKills: ").append(item.getKillCount()).
-                append("\nHours: ").append(item.getHoursSpent());
-        ((Item) holder).brief.setText(sb.toString());
+        sb.append("Profits: ").append(cmds.BigDecimalFormatter().format(item.getProfit())).
+                append("\nKills: ").append(cmds.BigDecimalFormatter().format(item.getKillCount())).
+                append("\nHours: ").append(cmds.BigDecimalFormatter().format(item.getHoursSpent()));
+
+        String string = sb.toString();
+        Spannable colouredText = new SpannableString(string);
+        if (item.getProfit().compareTo(new BigDecimal("0")) < 0)
+            colouredText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.pureRed, null)), string.indexOf(" "), string.indexOf("\n"), string.length());
+
+        ((Item) holder).brief.setText(colouredText);
 
         if (focusedPosition == position){
             if (((ColorDrawable)holder.itemView.getBackground()).getColor() != selectedColour){
