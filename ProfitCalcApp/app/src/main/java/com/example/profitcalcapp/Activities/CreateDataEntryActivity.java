@@ -190,7 +190,8 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         stringList.add(getResources().getString(R.string.text_none));
         //add the remaining auras held in storage
         for (Aura aura : storage.getAuras())
-            stringList.add(aura.getTitle());
+            if (aura.getTitle().equals(getResources().getString(R.string.text_none)))
+                stringList.add(aura.getTitle());
         //create an adapter with the list of strings created above
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, stringList);
         //set the drop down view layout
