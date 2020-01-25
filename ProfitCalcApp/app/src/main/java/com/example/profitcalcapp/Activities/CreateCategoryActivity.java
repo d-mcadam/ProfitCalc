@@ -50,8 +50,8 @@ public class CreateCategoryActivity extends AppCompatActivity {
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private final Activity thisActivity = this;
     private List<DataEntry> items = new ArrayList<>();
-    private Category tempCategory = null;
-    private Category editingCategory = null;
+    public Category tempCategory = null;
+    public Category editingCategory = null;
     //</editor-fold>
 
     @Override
