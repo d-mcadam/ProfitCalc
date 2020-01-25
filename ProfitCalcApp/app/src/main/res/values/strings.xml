@@ -9,6 +9,7 @@
     <string name="text_placeholder_12x">Profit: XXX, XXX, XXX, XXX</string>
     <string name="text_placeholder_12xph">Profit: XXX, XXX, XXX, XXX.XX / hour</string>
     <string name="text_placeholder_6xph">XXX, XXX / hour</string>
+    <string name="text_none">None</string>
 
     //Main activity
     <string name="main_categories_button">Categories</string>
