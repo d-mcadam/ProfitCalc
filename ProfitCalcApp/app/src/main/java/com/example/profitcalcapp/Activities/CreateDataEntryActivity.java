@@ -221,28 +221,160 @@ public class CreateDataEntryActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
             @Override
-            public void afterTextChanged(Editable editable) { CalculateDisplayValues(); }
+            public void afterTextChanged(Editable editable) {
+                CalculateDisplayValues();
+                try{
+                    String givenString = editable.toString();
+                    Long longval;
+                    if (givenString.contains(","))
+                        givenString = givenString.replaceAll(",", "");
+                    longval = Long.parseLong(givenString);
+                    String formattedString = cmds.BigDecimalFormatter().format(longval);
+
+//                    et.setText(formattedString);
+//                    et.setSelection(et.getText().length());
+
+                }catch(Exception e){
+                    System.out.println("################ EXCEPTION WAS THROWN #########################");
+                }
+            }
         };
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise start wealth">
         fieldStartWealth = findViewById(R.id.editTextStartWealthValue);
-        fieldStartWealth.addTextChangedListener(textWatcher);
+        fieldStartWealth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                CalculateDisplayValues();
+
+                fieldStartWealth.removeTextChangedListener(this);
+
+                try{
+                    String givenString = editable.toString();
+                    Long longval;
+                    if (givenString.contains(","))
+                        givenString = givenString.replaceAll(",", "");
+                    longval = Long.parseLong(givenString);
+                    String formattedString = cmds.BigDecimalFormatter().format(longval);
+
+                    fieldStartWealth.setText(formattedString);
+                    fieldStartWealth.setSelection(fieldStartWealth.getText().length());
+
+                }catch(Exception e){
+                    System.out.println("################ EXCEPTION WAS THROWN #########################");
+                }
+
+                fieldStartWealth.addTextChangedListener(this);
+
+            }
+        });
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise finish wealth">
         fieldFinishWealth = findViewById(R.id.editTextFinishWealthValue);
-        fieldFinishWealth.addTextChangedListener(textWatcher);
+        fieldFinishWealth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                CalculateDisplayValues();
+
+                fieldFinishWealth.removeTextChangedListener(this);
+
+                try{
+                    String givenString = editable.toString();
+                    Long longval;
+                    if (givenString.contains(","))
+                        givenString = givenString.replaceAll(",", "");
+                    longval = Long.parseLong(givenString);
+                    String formattedString = cmds.BigDecimalFormatter().format(longval);
+
+                    fieldFinishWealth.setText(formattedString);
+                    fieldFinishWealth.setSelection(fieldFinishWealth.getText().length());
+
+                }catch(Exception e){
+                    System.out.println("################ EXCEPTION WAS THROWN #########################");
+                }
+
+                fieldFinishWealth.addTextChangedListener(this);
+
+            }
+        });
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise hours spent">
         fieldHoursSpent = findViewById(R.id.editTextHoursValue);
-        fieldHoursSpent.addTextChangedListener(textWatcher);
+        fieldHoursSpent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                CalculateDisplayValues();
+
+                fieldHoursSpent.removeTextChangedListener(this);
+
+                try{
+                    String givenString = editable.toString();
+                    Long longval;
+                    if (givenString.contains(","))
+                        givenString = givenString.replaceAll(",", "");
+                    longval = Long.parseLong(givenString);
+                    String formattedString = cmds.BigDecimalFormatter().format(longval);
+
+                    fieldHoursSpent.setText(formattedString);
+                    fieldHoursSpent.setSelection(fieldHoursSpent.getText().length());
+
+                }catch(Exception e){
+                    System.out.println("################ EXCEPTION WAS THROWN #########################");
+                }
+
+                fieldHoursSpent.addTextChangedListener(this);
+
+            }
+        });
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise kill count">
         fieldKillCount = findViewById(R.id.editTextKillValue);
-        fieldKillCount.addTextChangedListener(textWatcher);
+        fieldKillCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { CalculateDisplayValues(); }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                CalculateDisplayValues();
+
+                fieldKillCount.removeTextChangedListener(this);
+
+                try{
+                    String givenString = editable.toString();
+                    Long longval;
+                    if (givenString.contains(","))
+                        givenString = givenString.replaceAll(",", "");
+                    longval = Long.parseLong(givenString);
+                    String formattedString = cmds.BigDecimalFormatter().format(longval);
+
+                    fieldKillCount.setText(formattedString);
+                    fieldKillCount.setSelection(fieldKillCount.getText().length());
+
+                }catch(Exception e){
+                    System.out.println("################ EXCEPTION WAS THROWN #########################");
+                }
+
+                fieldKillCount.addTextChangedListener(this);
+
+            }
+        });
         //</editor-fold>
 
         CheckSaveEligibility();
@@ -252,17 +384,17 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
     private void CalculateDisplayValues(){
         //start & finish wealth
-        String startValue = fieldStartWealth.getText().toString().trim();
-        String finishValue = fieldFinishWealth.getText().toString().trim();
+        String startValue = fieldStartWealth.getText().toString().trim().replaceAll(",", "");
+        String finishValue = fieldFinishWealth.getText().toString().trim().replaceAll(",", "");
         BigDecimal startWealth = startValue.equals("") ? new BigDecimal("0") : new BigDecimal(startValue);
         BigDecimal finishWealth = finishValue.equals("") ? new BigDecimal("0") : new BigDecimal(finishValue);
 
         //hours spent
-        String hoursValue = fieldHoursSpent.getText().toString().trim();
+        String hoursValue = fieldHoursSpent.getText().toString().trim().replaceAll(",", "");
         BigDecimal hoursSpent = hoursValue.equals("") ? new BigDecimal("1") : new BigDecimal(hoursValue).compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : new BigDecimal(hoursValue);
 
         //kill count
-        String killValue = fieldKillCount.getText().toString().trim();
+        String killValue = fieldKillCount.getText().toString().trim().replaceAll(",", "");;
         BigDecimal killCount = killValue.equals("") ? new BigDecimal("1") : new BigDecimal(killValue).compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : new BigDecimal(killValue);
 
 
