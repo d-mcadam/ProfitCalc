@@ -1,6 +1,7 @@
 package com.example.profitcalcapp.Utilities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -14,12 +15,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.profitcalcapp.Activities.CreateCategoryActivity;
+import com.example.profitcalcapp.Activities.CreateDataEntryActivity;
 import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.example.profitcalcapp.Utilities.IntentKeys.DATA_ENTRY_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -114,7 +120,11 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //DATA_ENTRY_PASS_KEY
+                Intent wnd = new Intent(context, CreateDataEntryActivity.class);
+                wnd.putExtra(DATA_ENTRY_PASS_KEY, items.get(position));
+                wnd.putExtra(STORAGE_CLASS_DATA, storage);
+                context.startActivity(wnd);
+                ((CreateCategoryActivity)context).finish();
             }
         });
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
