@@ -26,9 +26,11 @@ import com.example.profitcalcapp.Utilities.CategoryAdapter;
 import com.example.profitcalcapp.Utilities.Commands;
 import com.example.profitcalcapp.Utilities.DataEntryAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.profitcalcapp.Utilities.IntentKeys.COLLECTION_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class CreateCategoryActivity extends AppCompatActivity {
@@ -48,7 +50,7 @@ public class CreateCategoryActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private List<DataEntry> items = new ArrayList<>();
-    private List<DataEntry> collection = new ArrayList<>();
+    private ArrayList<DataEntry> collection = new ArrayList<>();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
@@ -198,7 +200,11 @@ public class CreateCategoryActivity extends AppCompatActivity {
     }
 
     public void AddDataEntry(View view){
-
+        Intent wnd = new Intent(this, CreateDataEntryActivity.class);
+        wnd.putExtra(STORAGE_CLASS_DATA, storage);
+        wnd.putExtra(COLLECTION_PASS_KEY, collection);
+        startActivity(wnd);
+        finish();
     }
 
 }
