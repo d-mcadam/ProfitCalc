@@ -3,6 +3,8 @@ package com.example.profitcalcapp.Data;
 import com.example.profitcalcapp.Utilities.BooleanString;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,58 +53,64 @@ public class Category implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Totals">
-    public int getTotalProfit(){
-        int r = 0;
+    public BigDecimal getTotalProfit(){
+        BigDecimal r = new BigDecimal("0");
         for (DataEntry entry : entries)
-            r += entry.getProfit();
+            r = r.add(entry.getProfit());
         return r;
     }
-    public int getTotalHoursSpent(){
-        int r = 0;
+    public BigDecimal getTotalHoursSpent(){
+        BigDecimal r = new BigDecimal("0");
         for (DataEntry entry : entries)
-            r += entry.getHoursSpent();
+            r = r.add(entry.getHoursSpent());
         return r;
     }
-    public int getTotalKills(){
-        int r = 0;
+    public BigDecimal getTotalKills(){
+        BigDecimal r = new BigDecimal("0");
         for (DataEntry entry : entries)
-            r += entry.getKillCount();
+            r = r.add(entry.getKillCount());
         return r;
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Averages">
-    public double getAverageProfitPerHour(){
-        int h = this.getTotalHoursSpent();
-        return this.getTotalProfit() / (h <= 0 ? 1.0 : ((double) h));
+    public BigDecimal getAverageProfitPerHour(){
+        BigDecimal hoursSpent = this.getTotalHoursSpent();
+        return this.getTotalProfit().divide(
+                hoursSpent.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : hoursSpent,
+                2, RoundingMode.HALF_UP);
     }
-    public double getAverageKillsPerHour(){
-        int h = this.getTotalHoursSpent();
-        return this.getTotalKills() / (h <= 0 ? 1.0 : ((double) h));
+    public BigDecimal getAverageKillsPerHour(){
+        BigDecimal hoursSpent = this.getTotalHoursSpent();
+        return this.getTotalKills().divide(
+                hoursSpent.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : hoursSpent,
+                2, RoundingMode.HALF_UP);
     }
-    public double getAverageProfitPerKill(){
-        int k = this.getTotalKills();
-        return this.getTotalProfit() / (k <= 0 ? 1.0 : ((double) k));
+    public BigDecimal getAverageProfitPerKill(){
+        BigDecimal kills = this.getTotalKills();
+        return this.getTotalProfit().divide(
+                kills.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : kills,
+                2, RoundingMode.HALF_UP);
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Useful data">
 
     //<editor-fold defaultstate="collapsed" desc="Highest and Lowest">
-    public double getHighestGainInHour(){
-        double r = 0.0;
+    public BigDecimal getHighestGainInHour(){
+        BigDecimal r = new BigDecimal("0");
 
         for (DataEntry entry : entries)
-            if (entry.getProfitPerHour() > r)
+            if (entry.getProfitPerHour().compareTo(r) > 0)
                 r = entry.getProfitPerHour();
 
         return r;
     }
-    public double getLowestGainInHour(){
-        double r = Double.MAX_VALUE;
+    public BigDecimal getLowestGainInHour(){
+        BigDecimal r = new BigDecimal("-1");
 
         for (DataEntry entry : entries)
-            if (entry.getProfitPerHour() < r)
+            if (r.compareTo(new BigDecimal("0")) < 0 || entry.getProfitPerHour().compareTo(r) < 0)
                 r = entry.getProfitPerHour();
 
         return r;
@@ -110,26 +118,26 @@ public class Category implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Averages per entry">
-    public double getAverageProfitPerEntry(){
-        int c = this.getEntryCount();
-        return this.getTotalProfit() / (c <= 0 ? 1.0 : ((double) c));
+    public BigDecimal getAverageProfitPerEntry(){
+        BigDecimal count = new BigDecimal(this.getEntryCount());
+        return this.getTotalProfit().divide(count.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : count);
     }
-    public double getAverageHoursPerEntry(){
-        int c = this.getEntryCount();
-        return this.getTotalHoursSpent() / (c <= 0 ? 1.0 : ((double) c));
+    public BigDecimal getAverageHoursPerEntry(){
+        BigDecimal count = new BigDecimal(this.getEntryCount());
+        return this.getTotalHoursSpent().divide(count.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : count);
     }
-    public double getAverageKillsPerEntry(){
-        int c = this.getEntryCount();
-        return this.getTotalKills() / (c <= 0 ? 1.0 : ((double) c));
+    public BigDecimal getAverageKillsPerEntry(){
+        BigDecimal count = new BigDecimal(this.getEntryCount());
+        return this.getTotalKills().divide(count.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : count);
     }
-    public double getAverageProfitPerKillPerEntry(){
-        double total = 0.0;
+    public BigDecimal getAverageProfitPerKillPerEntry(){
+        BigDecimal total = new BigDecimal("0");
 
         for (DataEntry entry : entries)
-            total += entry.getProfitPerKill();
+            total = total.add(entry.getProfitPerKill());
 
-        int c = this.getEntryCount();
-        return total / (c <= 0 ? 1.0 : ((double) c));
+        BigDecimal count = new BigDecimal(this.getEntryCount());
+        return total.divide(count.compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : count);
     }
     //</editor-fold>
 
