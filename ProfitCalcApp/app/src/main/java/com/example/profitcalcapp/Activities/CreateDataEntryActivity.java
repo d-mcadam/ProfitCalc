@@ -102,39 +102,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         }
         return true;
     }
-    private boolean UnsavedData(){
-
-        //title
-        String title = fieldEntryTitle.getText().toString().trim();
-
-        //aura
-        int spinnerPosition = fieldAuraSpinner.getSelectedItemPosition();
-
-        //start & finish wealth
-        String startValue = fieldStartWealth.getText().toString().trim();
-        String finishValue = fieldFinishWealth.getText().toString().trim();
-        int startWealth = startValue.equals("") ? 0 : Integer.parseInt(startValue);
-        int finishWealth = finishValue.equals("") ? 0 : Integer.parseInt(finishValue);
-
-        //hours spent
-        String hoursValue = fieldHoursSpent.getText().toString().trim();
-        double hoursSpent = hoursValue.equals("") ? 0.0 : Double.parseDouble(hoursValue);
-
-        //kill count
-        String killValue = fieldKillCount.getText().toString().trim();
-        int killCount = killValue.equals("") ? 0 : Integer.parseInt(killValue);
-
-        //additional details / text
-        String extraDetails = fieldExtraDetails.getText().toString().trim();
-
-        //check each result
-        return false;
-//        editingDataEntry == null ?
-//                !title.equals("") || spinnerPosition > 0 || !startValue.equals("") ||
-//                !finishValue.equals("") || !hoursValue.equals("") || !killValue.equals("") ||
-//                !extraDetails.equals("")
-//                ://OR
-//                false;
+    private boolean UnsavedData(){return false;
     }
 
     @Override
@@ -176,7 +144,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         //create a list to hold the strings
         final List<String> stringList = new ArrayList<>();
         //add a default / initial value
-        stringList.add("None");
+        stringList.add(getResources().getString(R.string.text_none));
         //add the remaining auras held in storage
         for (Aura aura : storage.getAuras())
             stringList.add(aura.getTitle());
@@ -245,7 +213,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
         //hours spent
         String hoursValue = fieldHoursSpent.getText().toString().trim();
-        BigDecimal hoursSpent = hoursValue.equals("") ? new BigDecimal("1") : new BigDecimal(hoursValue).compareTo(new BigDecimal("0")) == 0 ? new BigDecimal("1") : new BigDecimal(hoursValue);
+        BigDecimal hoursSpent = hoursValue.equals("") ? new BigDecimal("1") : new BigDecimal(hoursValue).compareTo(new BigDecimal("0")) <= 0 ? new BigDecimal("1") : new BigDecimal(hoursValue);
 
 
         //kill count
@@ -314,7 +282,22 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
     public void SaveEntry(View view){
         String title = fieldEntryTitle.getText().toString().trim();
-        DataEntry dataEntry = new DataEntry(title);
+        BigDecimal startWealth = new BigDecimal(fieldStartWealth.getText().toString().trim());
+        BigDecimal finishWealth = new BigDecimal(fieldFinishWealth.getText().toString().trim());
+        BigDecimal hoursSpent = new BigDecimal(fieldHoursSpent.getText().toString().trim());
+        BigDecimal killCount = new BigDecimal(fieldKillCount.getText().toString().trim());
+        String extraDetails = fieldExtraDetails.getText().toString().trim();
+
+        Aura aura = new Aura("Not an aura");
+        for (Aura a : storage.getAuras())
+            if (a.getTitle().equals(fieldAuraSpinner.getSelectedItem().toString())){
+                aura = a;
+                break;
+            }
+
+        DataEntry dataEntry = new DataEntry(title, startWealth, finishWealth, aura, hoursSpent, killCount, extraDetails);
+
+//will need to check for data entry editing variable to be null here
 
         Intent wnd = new Intent(this, CreateCategoryActivity.class);
         wnd.putExtra(STORAGE_CLASS_DATA, storage);
