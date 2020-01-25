@@ -236,16 +236,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextKillValue" />
 
             <TextView
+                android:id="@+id/textViewDisplayProfitPerKill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="67dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/text_placeholder_6xpkill"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDisplayKillsPerHour" />
+
+            <TextView
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/create_data_extra_label"
                 android:textColor="#000000"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDisplayKillsPerHour" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewDisplayProfitPerKill" />
 
             <EditText
                 android:id="@+id/editTextDataEntryDetails"
