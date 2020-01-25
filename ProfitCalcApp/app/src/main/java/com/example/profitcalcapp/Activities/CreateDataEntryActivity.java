@@ -7,7 +7,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,7 @@ import com.example.profitcalcapp.Utilities.Commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.profitcalcapp.Utilities.IntentKeys.COLLECTION_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class CreateDataEntryActivity extends AppCompatActivity {
@@ -35,7 +39,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
 
     //<editor-fold defaultstate="collapsed" desc="Activity Views">
     private Button buttonSave;
-    private EditText fieldAuraTitle;
+    private EditText fieldEntryTitle;
     private Spinner fieldAuraSpinner;
     private EditText fieldStartWealth;
     private EditText fieldFinishWealth;
@@ -50,6 +54,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private final Activity thisActivity = this;
     private DataEntry editingDataEntry = null;
+    private ArrayList<DataEntry> collections;
     //</editor-fold>
 
     @Override
@@ -85,7 +90,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     private boolean UnsavedData(){
 
         //title
-        String title = fieldAuraTitle.getText().toString().trim();
+        String title = fieldEntryTitle.getText().toString().trim();
 
         //aura
         int spinnerPosition = fieldAuraSpinner.getSelectedItemPosition();
@@ -135,9 +140,16 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         }
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Get collection from Intent">
+        collections = (ArrayList<DataEntry>) intent.getSerializableExtra(COLLECTION_PASS_KEY);
+        if (collections == null){
+            System.out.println("collections found null");
+            collections = new ArrayList<>();
+        }
+        //</editor-fold>
+
         //<editor-fold defaultstate="collapsed" desc="Reference activity Views">
         buttonSave = findViewById(R.id.buttonSaveDataEntry);
-        fieldAuraTitle = findViewById(R.id.editTextDataEntryTitle);
         fieldStartWealth = findViewById(R.id.editTextStartWealthValue);
         fieldFinishWealth = findViewById(R.id.editTextFinishWealthValue);
         displayProfit = findViewById(R.id.textViewDisplayProfit);
@@ -166,5 +178,48 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         fieldAuraSpinner.setAdapter(arrayAdapter);
         //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Initialise title field">
+        fieldEntryTitle = findViewById(R.id.editTextDataEntryTitle);
+        fieldEntryTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { CheckSaveEligibility(); }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { CheckSaveEligibility(); }
+            @Override
+            public void afterTextChanged(Editable editable) { CheckSaveEligibility(); }
+        });
+        //</editor-fold>
+
     }
+
+    private boolean DuplicateTitle(){
+
+        for (DataEntry dataEntry : collections){
+            if (dataEntry.getTitle().toLowerCase().equals(fieldEntryTitle.getText().toString().toLowerCase().trim())){
+                fieldEntryTitle.setError("Entry name already exists");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void CheckSaveEligibility(){
+        boolean titleExists = !fieldEntryTitle.getText().toString().trim().equals("");
+        if (!titleExists)
+            fieldEntryTitle.setError("Title cannot be empty");
+
+        boolean duplicateTitle = DuplicateTitle();
+        boolean eligible = titleExists && !duplicateTitle;
+        int colour = eligible ? getResources().getColor(R.color.pureGreen, null) : getResources().getColor(R.color.greyedOut, null);
+
+        buttonSave.setClickable(eligible);
+        buttonSave.setBackgroundColor(colour);
+        buttonSave.setTooltipText(eligible ? "Save Entry" : !titleExists ? "Need a title" : "Duplicate Title");
+    }
+
+    public void SaveEntry(View view){
+
+    }
+
 }
