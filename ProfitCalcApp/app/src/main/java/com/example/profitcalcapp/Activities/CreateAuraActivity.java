@@ -91,7 +91,7 @@ public class CreateAuraActivity extends AppCompatActivity {
         storage = (Storage) intent.getSerializableExtra(STORAGE_CLASS_DATA);
         if (storage == null){
             Toast.makeText(this, "Error loading storage in CreateAuraActivity.class", Toast.LENGTH_LONG).show();
-            cmds.StartActivity(this, storage, MainActivity.class);
+            cmds.StartActivity(this, storage, AuraManagementActivity.class);
             return;
         }
         //</editor-fold>
