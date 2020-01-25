@@ -20,6 +20,18 @@
     <string name="create_category_name_hint">The name to search by</string>
     <string name="create_category_search_entry_hint">Search entries</string>
 
+    //Create Data Entry activity
+    <string name="create_data_title">Create Entry</string>
+    <string name="create_data_name_label">Name:</string>
+    <string name="create_data_name_hint">Summarise</string>
+    <string name="create_data_aura_label">Aura:</string>
+    <string name="create_data_start_label">Start Wealth:</string>
+    <string name="create_data_finish_label">Finish Wealth</string>
+    <string name="create_data_kills_label">Kill Count:</string>
+    <string name="create_data_hours_label">Hours Spent:</string>
+    <string name="create_data_extra_label">Extra details</string>
+    <string name="create_data_extra_hint">Any extra details like inventory, special armour ect.</string>
+
     //Settings activity
     <string name="settings_toggle_description">Using the Wealth Evaluator? or Entering data manually?</string>
     <string name="settings_toggle_warning">Requires Wealth Evaluator Unlocked</string>
