@@ -4,12 +4,14 @@ import com.example.profitcalcapp.Utilities.BooleanString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Category implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private String title = "";
-    private ArrayList<DataEntry> entries = new ArrayList<>();
+    private final ArrayList<DataEntry> entries = new ArrayList<>();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructors">
@@ -22,7 +24,16 @@ public class Category implements Serializable {
     public BooleanString addEntry(DataEntry entry){
         if (entry == null)
             return new BooleanString("Entry was null.");
-        return entries.add(entry) ? new BooleanString() : new BooleanString("Unable to add entry.");
+        return entries.add(entry) ? OrderAndReturn() : new BooleanString("Unable to add entry.");
+    }
+    private BooleanString OrderAndReturn(){
+        Collections.sort(entries, new Comparator<DataEntry>() {
+            @Override
+            public int compare(DataEntry o1, DataEntry o2) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
+        return new BooleanString();
     }
     public BooleanString deleteEntry(DataEntry entry){
         if (entry == null)
