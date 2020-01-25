@@ -115,17 +115,17 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         String auraText = fieldAuraSpinner.getSelectedItem().toString();
 
         //start & finish wealth
-        String startValue = fieldStartWealth.getText().toString().trim();
-        String finishValue = fieldFinishWealth.getText().toString().trim();
+        String startValue = fieldStartWealth.getText().toString().trim().replaceAll(",", "");
+        String finishValue = fieldFinishWealth.getText().toString().trim().replaceAll(",", "");
         BigDecimal startWealth = startValue.equals("") ? new BigDecimal("0") : new BigDecimal(startValue);
         BigDecimal finishWealth = finishValue.equals("") ? new BigDecimal("0") : new BigDecimal(finishValue);
 
         //hours spent
-        String hoursValue = fieldHoursSpent.getText().toString().trim();
+        String hoursValue = fieldHoursSpent.getText().toString().trim().replaceAll(",", "");
         BigDecimal hoursSpent = hoursValue.equals("") ? new BigDecimal("0") : new BigDecimal(hoursValue);
 
         //kill count
-        String killValue = fieldKillCount.getText().toString().trim();
+        String killValue = fieldKillCount.getText().toString().trim().replaceAll(",", "");
         BigDecimal killCount = killValue.equals("") ? new BigDecimal("0") : new BigDecimal(killValue);
 
         //additional details / text
