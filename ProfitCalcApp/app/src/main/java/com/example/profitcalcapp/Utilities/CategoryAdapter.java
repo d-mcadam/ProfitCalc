@@ -1,6 +1,7 @@
 package com.example.profitcalcapp.Utilities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -14,12 +15,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.profitcalcapp.Activities.CategoryActivity;
+import com.example.profitcalcapp.Activities.CreateCategoryActivity;
 import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -114,7 +120,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //EDITING_CATEGORY_PASS_KEY
+                Intent wnd = new Intent(context, CreateCategoryActivity.class);
+                wnd.putExtra(STORAGE_CLASS_DATA, storage);
+                wnd.putExtra(EDITING_CATEGORY_PASS_KEY, item);
+                context.startActivity(wnd);
+                ((CategoryActivity)context).finish();
             }
         });
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
