@@ -31,6 +31,7 @@ import java.util.List;
 import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.NEW_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
+import static com.example.profitcalcapp.Utilities.IntentKeys.TEMPORARY_CATEGORY_PASS_KEY;
 
 public class CreateCategoryActivity extends AppCompatActivity {
 
@@ -144,9 +145,12 @@ public class CreateCategoryActivity extends AppCompatActivity {
             }
         }else{
             fieldCategoryTitle.setText(editingCategory.getTitle());
-            tempCategory = new Category(editingCategory.getTitle());
-            for (DataEntry dataEntry : editingCategory.getEntries())
-                tempCategory.addEntry(dataEntry);
+            tempCategory = (Category) intent.getSerializableExtra(TEMPORARY_CATEGORY_PASS_KEY);
+            if (tempCategory == null) {
+                tempCategory = new Category(editingCategory.getTitle());
+                for (DataEntry dataEntry : editingCategory.getEntries())
+                    tempCategory.addEntry(dataEntry);
+            }
         }
         //</editor-fold>
 
@@ -187,7 +191,7 @@ public class CreateCategoryActivity extends AppCompatActivity {
     private boolean DuplicateTitle(){
 
         for (Category category : storage.getCategories()){
-            if (editingCategory != null && category.getTitle().equals(editingCategory.getTitle()))
+            if (editingCategory != null && category.getId().equals(editingCategory.getId()))
                 continue;
 
             if (category.getTitle().toLowerCase().equals(fieldCategoryTitle.getText().toString().toLowerCase().trim())){
@@ -229,14 +233,13 @@ public class CreateCategoryActivity extends AppCompatActivity {
             }
         }else{
             for (Category category : storage.getCategories())
-                if (category.getTitle().equals(editingCategory.getTitle())){
+                if (category.getId().equals(editingCategory.getId())){
                     category.setTitle(title);
                     category.getEntries().clear();
                     for (DataEntry dataEntry : editingCategory.getEntries())
                         category.addEntry(dataEntry);
                     break;
                 }
-            //all entries should already be updated on the object
         }
 
         cmds.SaveAndStartActivity(this, storage, CategoryActivity.class);
@@ -254,6 +257,7 @@ public class CreateCategoryActivity extends AppCompatActivity {
         }else {
             editingCategory.setTitle(title);
             wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
+            wnd.putExtra(TEMPORARY_CATEGORY_PASS_KEY, tempCategory);
         }
 
         startActivity(wnd);
