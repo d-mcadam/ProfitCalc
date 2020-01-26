@@ -1,6 +1,8 @@
 package com.example.profitcalcapp.Utilities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Spannable;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -130,7 +133,26 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
+                dialog.setCancelable(true);
+                dialog.setTitle("Deleting '" + item.getTitle() + "'");
+                dialog.setMessage("Deleting items cannot be undone, do you wish to continue?");
+
+                dialog.setNegativeButton("Cancel", null);
+                dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        BooleanString r = storage.deleteCategory(item);
+                        if (!r.result)
+                            Toast.makeText(context, r.msg, Toast.LENGTH_LONG).show();
+                        new AppDataStorage(context, storage).execute();
+                        focusedPosition = -1;
+                        ((CategoryActivity)context).RefreshList();
+                    }
+                });
+
+                dialog.create().show();
             }
         });
 
