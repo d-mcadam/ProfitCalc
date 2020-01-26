@@ -43,7 +43,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="@string/create_aura_name_hint"
-        android:inputType="textPersonName"
+        android:inputType="textCapSentences"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
