@@ -42,7 +42,7 @@ public class CreateCategoryActivity extends AppCompatActivity {
     //<editor-fold defaultstate="collapsed" desc="Activity Views">
     private DataEntryAdapter dataEntryAdapter;
     private RecyclerView recyclerView;
-    private EditText fieldCategoryTitle;
+    public EditText fieldCategoryTitle;
     private EditText searchField;
     private Button buttonSave;
     //</editor-fold>
@@ -87,10 +87,13 @@ public class CreateCategoryActivity extends AppCompatActivity {
 
         boolean titleCheck = editingCategory != null ?
                 !title.equals(editingCategory.getTitle()) : !title.equals("");
-        boolean listCheck = editingCategory != null ?
-                !editingCategory.getEntries().containsAll(tempCategory.getEntries()) ||
-                !tempCategory.getEntries().containsAll(editingCategory.getEntries())
-                : tempCategory.getEntries().size() > 0;
+        boolean listCheck;
+        if (editingCategory != null){
+            listCheck = !editingCategory.getEntries().containsAll(tempCategory.getEntries()) ||
+                    !tempCategory.getEntries().containsAll(editingCategory.getEntries());
+        }else{
+            listCheck = tempCategory.getEntries().size() > 0;
+        }
 
         return titleCheck || listCheck;
     }
