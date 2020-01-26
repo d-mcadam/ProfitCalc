@@ -131,7 +131,7 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 else
                     wnd.putExtra(EDITING_CATEGORY_PASS_KEY, ((CreateCategoryActivity)context).editingCategory);
 
-                wnd.putExtra(DATA_ENTRY_PASS_KEY, items.get(position));
+                wnd.putExtra(DATA_ENTRY_PASS_KEY, item);
                 wnd.putExtra(STORAGE_CLASS_DATA, storage);
                 context.startActivity(wnd);
                 ((CreateCategoryActivity)context).finish();
@@ -140,8 +140,6 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DataEntry item = items.get(position);
-
                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
                 dialog.setCancelable(true);
