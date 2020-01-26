@@ -12,6 +12,7 @@ import java.util.Comparator;
 public class Category implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
+    private String id = "";
     private String title = "";
     private final ArrayList<DataEntry> entries = new ArrayList<>();
     //</editor-fold>
@@ -47,6 +48,7 @@ public class Category implements Serializable {
     //<editor-fold defaultstate="collapsed" desc="Getters">
 
     //<editor-fold defaultstate="collapsed" desc="Static values">
+    public String getId(){ return this.id; }
     public String getTitle(){ return this.title; }
     public ArrayList<DataEntry> getEntries(){ return this.entries; }
     public int getEntryCount(){ return this.entries.size(); }
@@ -146,6 +148,7 @@ public class Category implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters">
+    public void setId(String id){ this.id = id; }
     public void setTitle(String title){ this.title = title; }
     //</editor-fold>
 
