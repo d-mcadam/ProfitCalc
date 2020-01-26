@@ -87,8 +87,12 @@ public class CreateCategoryActivity extends AppCompatActivity {
 
         boolean titleCheck = editingCategory != null ?
                 !title.equals(editingCategory.getTitle()) : !title.equals("");
+        boolean listCheck = editingCategory != null ?
+                !editingCategory.getEntries().containsAll(tempCategory.getEntries()) ||
+                !tempCategory.getEntries().containsAll(editingCategory.getEntries())
+                : tempCategory.getEntries().size() > 0;
 
-        return titleCheck;
+        return titleCheck || listCheck;
     }
 
     @Override
@@ -137,6 +141,9 @@ public class CreateCategoryActivity extends AppCompatActivity {
             }
         }else{
             fieldCategoryTitle.setText(editingCategory.getTitle());
+            tempCategory = new Category(editingCategory.getTitle());
+            for (DataEntry dataEntry : editingCategory.getEntries())
+                tempCategory.addEntry(dataEntry);
         }
         //</editor-fold>
 
