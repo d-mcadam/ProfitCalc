@@ -84,7 +84,11 @@ public class CreateCategoryActivity extends AppCompatActivity {
     }
     private boolean UnsavedData(){
         String title = fieldCategoryTitle.getText().toString().trim();
-        return !title.equals("");
+
+        boolean titleCheck = editingCategory != null ?
+                !title.equals(editingCategory.getTitle()) : !title.equals("");
+
+        return titleCheck;
     }
 
     @Override
@@ -173,6 +177,9 @@ public class CreateCategoryActivity extends AppCompatActivity {
     private boolean DuplicateTitle(){
 
         for (Category category : storage.getCategories()){
+            if (editingCategory != null && category.getTitle().equals(editingCategory.getTitle()))
+                continue;
+
             if (category.getTitle().toLowerCase().equals(fieldCategoryTitle.getText().toString().toLowerCase().trim())){
                 fieldCategoryTitle.setError("Category name already exists.");
                 return true;
@@ -211,7 +218,14 @@ public class CreateCategoryActivity extends AppCompatActivity {
                 return;
             }
         }else{
-            editingCategory.setTitle(title);
+            for (Category category : storage.getCategories())
+                if (category.getTitle().equals(editingCategory.getTitle())){
+                    category.setTitle(title);
+                    category.getEntries().clear();
+                    for (DataEntry dataEntry : editingCategory.getEntries())
+                        category.addEntry(dataEntry);
+                    break;
+                }
             //all entries should already be updated on the object
         }
 
