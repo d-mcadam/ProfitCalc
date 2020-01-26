@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
+import java.util.Random;
 
 public class Storage implements Serializable {
 
@@ -22,6 +24,8 @@ public class Storage implements Serializable {
     public BooleanString addCategory(Category category){
         if (category == null)
             return new BooleanString("Category was null.");
+
+        category.setId(GenerateUniqueCategoryID());
         return this.categories.add(category) ? OrderCategoriesAndReturn() : new BooleanString("Unable to add Category.");
     }
     public BooleanString deleteCategory(Category category){
@@ -69,6 +73,29 @@ public class Storage implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Additional methods">
+    private String GenerateUniqueCategoryID(){
+        final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        final String lower = upper.toLowerCase(Locale.ROOT);
+        final String digits = "1234567890";
+        final String chars = upper + lower + digits;
+
+        final StringBuilder id = new StringBuilder();
+
+        do{
+            for (int i = 0; i < 10; i++){
+                id.append(chars.toCharArray()[new Random().nextInt(chars.length())]);
+            }
+        }while(categories.stream().anyMatch(item -> item.getId().equals(id.toString())));
+
+        return id.toString();
+    }
+    private String GenerateUniqueAuraID(ArrayList<Aura> auras){
+        return "";
+    }
+    private String GenerateUniqueDefaultObjectID(ArrayList<DefaultEntryObject> defaultEntryObjects){
+        return "";
+    }
+
     private BooleanString OrderCategoriesAndReturn(){
 
         Collections.sort(categories, new Comparator<Category>() {
