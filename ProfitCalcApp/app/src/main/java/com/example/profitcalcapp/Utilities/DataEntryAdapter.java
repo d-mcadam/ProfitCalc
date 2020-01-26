@@ -18,33 +18,36 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.profitcalcapp.Activities.CategoryActivity;
 import com.example.profitcalcapp.Activities.CreateCategoryActivity;
+import com.example.profitcalcapp.Activities.CreateDataEntryActivity;
 import com.example.profitcalcapp.Data.Category;
+import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.example.profitcalcapp.Utilities.IntentKeys.DATA_ENTRY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
+import static com.example.profitcalcapp.Utilities.IntentKeys.NEW_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
 
-public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final Storage storage;
     private final Commands cmds = new Commands();
 
     private Context context;
-    private List<Category> items;
+    private List<DataEntry> items;
 
-    private final int defaultHeight = 1429;
-    private final int defaultDivision = 12;
+    private final int defaultHeight = 1245;
+    private final int defaultDivision = 11;
     private final int expandedDivision = 4;
 
     public int focusedPosition = -1;
 
-    public CategoryAdapter(Context context, List<Category> items, Storage storage){
+    public DataEntryAdapter(Context context, List<DataEntry> items, Storage storage){
         this.context = context;
         this.items = items;
         this.storage = storage;
@@ -53,7 +56,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View row = LayoutInflater.from(context).inflate(R.layout.custom_row_category, parent, false);
+        View row = LayoutInflater.from(context).inflate(R.layout.custom_row_data_entry, parent, false);
         row.getLayoutParams().height = defaultHeight / defaultDivision;
         return new Item(row);
     }
@@ -73,18 +76,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
         final int selectedColour = context.getResources().getColor(R.color.selectedGrey, null);
-        final Category item = items.get(position);
+        final DataEntry item = items.get(position);
         ((Item)holder).title.setText(item.getTitle());
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Profits: ").append(cmds.BigDecimalFormatter().format(item.getTotalProfit())).
-                append("\nEntries: ").append(item.getEntryCount()).
-                append("\nKills: ").append(cmds.BigDecimalFormatter().format(item.getTotalKills())).
-                append("\nHours: ").append(cmds.BigDecimalFormatter().format(item.getTotalHoursSpent()));
+        sb.append("Profits: ").append(cmds.BigDecimalFormatter().format(item.getProfit())).
+                append("\nKills: ").append(cmds.BigDecimalFormatter().format(item.getKillCount())).
+                append("\nHours: ").append(cmds.BigDecimalFormatter().format(item.getHoursSpent()));
 
         String string = sb.toString();
         Spannable colouredText = new SpannableString(string);
-        if (item.getTotalProfit().compareTo(new BigDecimal("0")) < 0)
+        if (item.getProfit().compareTo(new BigDecimal("0")) < 0)
             colouredText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.pureRed, null)), string.indexOf(" "), string.indexOf("\n"), string.length());
 
         ((Item) holder).brief.setText(colouredText);
@@ -123,11 +125,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((Item) holder).edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent wnd = new Intent(context, CreateCategoryActivity.class);
+                Intent wnd = new Intent(context, CreateDataEntryActivity.class);
+
+                if (((CreateCategoryActivity)context).editingCategory == null) {
+                    Category c = ((CreateCategoryActivity) context).tempCategory;
+                    c.setTitle(((CreateCategoryActivity) context).fieldCategoryTitle.getText().toString().trim());
+                    wnd.putExtra(NEW_CATEGORY_PASS_KEY, ((CreateCategoryActivity) context).tempCategory);
+                }else {
+                    Category c = ((CreateCategoryActivity) context).editingCategory;
+                    c.setTitle(((CreateCategoryActivity) context).fieldCategoryTitle.getText().toString().trim());
+                    wnd.putExtra(EDITING_CATEGORY_PASS_KEY, ((CreateCategoryActivity) context).editingCategory);
+                }
+
+                wnd.putExtra(DATA_ENTRY_PASS_KEY, item);
                 wnd.putExtra(STORAGE_CLASS_DATA, storage);
-                wnd.putExtra(EDITING_CATEGORY_PASS_KEY, item);
                 context.startActivity(wnd);
-                ((CategoryActivity)context).finish();
+                ((CreateCategoryActivity)context).finish();
             }
         });
         ((Item) holder).delete.setOnClickListener(new View.OnClickListener() {
@@ -143,19 +156,25 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        BooleanString r = storage.deleteCategory(item);
+
+                        BooleanString r;
+                        if (((CreateCategoryActivity)context).editingCategory == null)
+                            r = ((CreateCategoryActivity)context).tempCategory.deleteEntry(item);
+                        else
+                            r = ((CreateCategoryActivity)context).editingCategory.deleteEntry(item);
+
                         if (!r.result)
                             Toast.makeText(context, r.msg, Toast.LENGTH_LONG).show();
                         new AppDataStorage(context, storage).execute();
                         focusedPosition = -1;
-                        ((CategoryActivity)context).RefreshList();
+                        ((CreateCategoryActivity)context).RefreshList();
+
                     }
                 });
 
                 dialog.create().show();
             }
         });
-
     }
 
     @Override
@@ -168,13 +187,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ImageButton edit;
         ImageButton delete;
 
-        public Item(View itemView) {
+        public Item(View itemView){
             super(itemView);
-            title = itemView.findViewById(R.id.rowTitleCategory);
-            brief = itemView.findViewById(R.id.rowBriefCategory);
-            view = itemView.findViewById(R.id.rowButtonViewCategory);
-            edit = itemView.findViewById(R.id.rowButtonEditCategory);
-            delete = itemView.findViewById(R.id.rowButtonDeleteCategory);
+            title = itemView.findViewById(R.id.rowTitleDataEntry);
+            brief = itemView.findViewById(R.id.rowBriefDataEntry);
+            view = itemView.findViewById(R.id.rowButtonViewDataEntry);
+            edit = itemView.findViewById(R.id.rowButtonEditDataEntry);
+            delete = itemView.findViewById(R.id.rowButtonDeleteDataEntry);
         }
     }
 

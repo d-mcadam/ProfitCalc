@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.profitcalcapp.Data.Aura;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
 import com.example.profitcalcapp.Utilities.AppDataStorage;
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Create a None aura if one does not exist">
+        if (storage.getAuras().stream().noneMatch(item -> item.getTitle().equals(getResources().getString(R.string.text_none))))
+            storage.addAura(new Aura("None"));
         //</editor-fold>
 
     }
