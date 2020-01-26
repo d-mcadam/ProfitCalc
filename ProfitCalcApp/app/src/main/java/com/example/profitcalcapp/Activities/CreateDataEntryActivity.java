@@ -199,7 +199,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         stringList.add(getResources().getString(R.string.text_none));
         //add the remaining auras held in storage
         for (Aura aura : storage.getAuras())
-            if (aura.getTitle().equals(getResources().getString(R.string.text_none)))
+            if (!aura.getTitle().equals(getResources().getString(R.string.text_none)))
                 stringList.add(aura.getTitle());
         //create an adapter with the list of strings created above
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, stringList);
@@ -219,6 +219,15 @@ public class CreateDataEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) { CheckSaveEligibility(); }
         });
+
+        StringBuilder sb = new StringBuilder();
+        if (newCategory != null) {
+            sb.append(newCategory.getTitle()).append(" run ").append(newCategory.getEntryCount() + 1);
+            fieldEntryTitle.setText(sb.toString());
+        }else{
+            sb.append(editingCategory.getTitle()).append(" run ").append(editingCategory.getEntryCount() + 1);
+            fieldEntryTitle.setText(sb.toString());
+        }
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise generic text watcher for start and finish wealth value fields">
