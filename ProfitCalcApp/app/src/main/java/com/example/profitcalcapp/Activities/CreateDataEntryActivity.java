@@ -34,6 +34,7 @@ import static com.example.profitcalcapp.Utilities.IntentKeys.DATA_ENTRY_PASS_KEY
 import static com.example.profitcalcapp.Utilities.IntentKeys.EDITING_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.NEW_CATEGORY_PASS_KEY;
 import static com.example.profitcalcapp.Utilities.IntentKeys.STORAGE_CLASS_DATA;
+import static com.example.profitcalcapp.Utilities.IntentKeys.TEMPORARY_CATEGORY_PASS_KEY;
 
 public class CreateDataEntryActivity extends AppCompatActivity {
 
@@ -60,6 +61,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private Category editingCategory = null;
     private Category newCategory = null;
+    private Category tempCategory = null;
     private DataEntry editingDataEntry = null;
     //</editor-fold>
 
@@ -173,6 +175,8 @@ public class CreateDataEntryActivity extends AppCompatActivity {
         editingCategory = (Category) intent.getSerializableExtra(EDITING_CATEGORY_PASS_KEY);
         if (editingCategory == null) {
             newCategory = (Category) intent.getSerializableExtra(NEW_CATEGORY_PASS_KEY);
+        }else{
+            tempCategory = (Category) intent.getSerializableExtra(TEMPORARY_CATEGORY_PASS_KEY);
         }
         editingDataEntry = (DataEntry) intent.getSerializableExtra(DATA_ENTRY_PASS_KEY);
         //</editor-fold>
@@ -545,6 +549,7 @@ public class CreateDataEntryActivity extends AppCompatActivity {
                     }
             }
             wnd.putExtra(EDITING_CATEGORY_PASS_KEY, editingCategory);
+            wnd.putExtra(TEMPORARY_CATEGORY_PASS_KEY, tempCategory);
         }
 
         startActivity(wnd);
