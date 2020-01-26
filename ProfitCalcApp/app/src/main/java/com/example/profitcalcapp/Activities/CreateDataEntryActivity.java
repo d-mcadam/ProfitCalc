@@ -219,6 +219,15 @@ public class CreateDataEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) { CheckSaveEligibility(); }
         });
+
+        StringBuilder sb = new StringBuilder();
+        if (newCategory != null) {
+            sb.append(newCategory.getTitle()).append(" run ").append(newCategory.getEntryCount() + 1);
+            fieldEntryTitle.setText(sb.toString());
+        }else{
+            sb.append(editingCategory.getTitle()).append(" run ").append(editingCategory.getEntryCount() + 1);
+            fieldEntryTitle.setText(sb.toString());
+        }
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Initialise generic text watcher for start and finish wealth value fields">
