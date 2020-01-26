@@ -20,6 +20,9 @@ public class IntentKeys {
     //for passing category from create category to create entry activity for creating a new entry
     public static final String NEW_CATEGORY_PASS_KEY = "NEW_CATEGORY_PASS_KEY";
 
+    //for passing a reference to the original category object that was being entered for appropriate unsaved data check
+    public static final String TEMPORARY_CATEGORY_PASS_KEY = "TEMPORARY_CATEGORY_PASS_KEY";
+
     //for passing data entry from create category to create entry activity for editing an existing entry
     public static final String DATA_ENTRY_PASS_KEY = "DATA_ENTRY_PASS_KEY";
 
