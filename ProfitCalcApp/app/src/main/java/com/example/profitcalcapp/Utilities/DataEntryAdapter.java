@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.profitcalcapp.Activities.CreateCategoryActivity;
 import com.example.profitcalcapp.Activities.CreateDataEntryActivity;
+import com.example.profitcalcapp.Data.Category;
 import com.example.profitcalcapp.Data.DataEntry;
 import com.example.profitcalcapp.Data.Storage;
 import com.example.profitcalcapp.R;
@@ -126,10 +127,15 @@ public class DataEntryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onClick(View view) {
                 Intent wnd = new Intent(context, CreateDataEntryActivity.class);
 
-                if (((CreateCategoryActivity)context).editingCategory == null)
-                    wnd.putExtra(NEW_CATEGORY_PASS_KEY, ((CreateCategoryActivity)context).tempCategory);
-                else
-                    wnd.putExtra(EDITING_CATEGORY_PASS_KEY, ((CreateCategoryActivity)context).editingCategory);
+                if (((CreateCategoryActivity)context).editingCategory == null) {
+                    Category c = ((CreateCategoryActivity) context).tempCategory;
+                    c.setTitle(((CreateCategoryActivity) context).fieldCategoryTitle.getText().toString().trim());
+                    wnd.putExtra(NEW_CATEGORY_PASS_KEY, ((CreateCategoryActivity) context).tempCategory);
+                }else {
+                    Category c = ((CreateCategoryActivity) context).editingCategory;
+                    c.setTitle(((CreateCategoryActivity) context).fieldCategoryTitle.getText().toString().trim());
+                    wnd.putExtra(EDITING_CATEGORY_PASS_KEY, ((CreateCategoryActivity) context).editingCategory);
+                }
 
                 wnd.putExtra(DATA_ENTRY_PASS_KEY, item);
                 wnd.putExtra(STORAGE_CLASS_DATA, storage);
